@@ -34,6 +34,7 @@ async function runMigrations() {
       "supabase/001_schema.sql",
       "supabase/002_rls_policies.sql",
       "supabase/003_seed_amenities.sql",
+      "supabase/004_auth_trigger.sql",
     ];
 
     for (const file of files) {
