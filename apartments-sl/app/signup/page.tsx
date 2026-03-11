@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { toast } from "react-hot-toast";
-import { FaEnvelope, FaLock, FaUser, FaBuilding } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaLock,
+  FaUser,
+  FaBuilding,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -14,6 +20,7 @@ export default function SignUpPage() {
   const [fullName, setFullName] = useState("");
   const [role, setRole] = useState<"RENTER" | "LANDLORD">("RENTER");
   const [loading, setLoading] = useState(false);
+  const [emailConfirmPending, setEmailConfirmPending] = useState(false);
 
   const router = useRouter();
   const signUp = useAuthStore((state) => state.signUp);
@@ -31,19 +38,49 @@ export default function SignUpPage() {
     setLoading(true);
     try {
       await signUp(email, password, fullName, role);
-      toast.success("Account created!");
+      toast.success("Account created! Welcome to Apartments.SL");
       router.push(
         role === "LANDLORD" ? "/dashboard/landlord" : "/dashboard/renter",
       );
     } catch (error: any) {
-      toast.error(error.message || "Failed to create account");
+      if (error.message === "__EMAIL_CONFIRMATION_REQUIRED__") {
+        setEmailConfirmPending(true);
+      } else {
+        toast.error(error.message || "Failed to create account");
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  // ── Email confirmation pending screen ────────────────────────────────────
+  if (emailConfirmPending) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
+        <div className="bg-white rounded-2xl border border-gray-100 p-10 max-w-md w-full text-center shadow-sm">
+          <FaCheckCircle className="text-green-500 text-5xl mx-auto mb-5" />
+          <h1 className="text-2xl font-black text-gray-900 mb-3">
+            Check your email
+          </h1>
+          <p className="text-gray-600 mb-2">We sent a confirmation link to</p>
+          <p className="font-bold text-gray-900 mb-6">{email}</p>
+          <p className="text-gray-500 text-sm mb-8">
+            Click the link in that email to activate your account, then come
+            back and sign in.
+          </p>
+          <Link
+            href="/login"
+            className="block w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors"
+          >
+            Go to Sign In
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   const inputCls =
-    "w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
+    "w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
 
   const FlagLogo = () => (
     <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">

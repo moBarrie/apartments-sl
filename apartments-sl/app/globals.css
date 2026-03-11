@@ -48,12 +48,7 @@
   --color-ocean-900: #002f4f;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Dark mode intentionally disabled — this is a light-mode app */
 
 body {
   background: var(--background);

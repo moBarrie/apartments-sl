@@ -21,7 +21,7 @@ export default function LoginPage() {
     try {
       await signIn(email, password);
       toast.success("Welcome back!");
-      const role = useAuthStore.getState().user?.role;
+      const role = useAuthStore.getState().profile?.role;
       router.push(
         role === "LANDLORD" ? "/dashboard/landlord" : "/dashboard/renter",
       );
@@ -33,7 +33,7 @@ export default function LoginPage() {
   };
 
   const inputCls =
-    "w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
+    "w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
 
   const FlagLogo = () => (
     <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
