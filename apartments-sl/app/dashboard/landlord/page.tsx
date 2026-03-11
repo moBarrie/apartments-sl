@@ -34,7 +34,7 @@ interface Apartment {
 }
 
 export default function LandlordDashboard() {
-  const { user } = useAuthStore();
+  const { user, profile, isLoading } = useAuthStore();
   const router = useRouter();
   const supabase = createClient();
 
@@ -48,19 +48,22 @@ export default function LandlordDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Wait until auth has finished loading before checking
+    if (isLoading) return;
+
     if (!user) {
       router.push("/login");
       return;
     }
 
-    if (user.role !== "LANDLORD") {
+    if (profile?.role !== "LANDLORD") {
       toast.error("Access denied");
       router.push("/");
       return;
     }
 
     fetchData();
-  }, [user]);
+  }, [user, profile, isLoading]);
 
   const fetchData = async () => {
     try {

@@ -17,6 +17,8 @@ import {
   FaRegHeart,
   FaUser,
   FaStar,
+  FaPhone,
+  FaPaperPlane,
 } from "react-icons/fa";
 
 interface Apartment {
@@ -43,7 +45,7 @@ interface Apartment {
 export default function ApartmentDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
   const supabase = createClient();
 
   const [apartment, setApartment] = useState<Apartment | null>(null);
@@ -51,10 +53,23 @@ export default function ApartmentDetailPage() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
 
+  // Enquiry form state
+  const [enquiryName, setEnquiryName] = useState("");
+  const [enquiryPhone, setEnquiryPhone] = useState("");
+  const [enquiryMessage, setEnquiryMessage] = useState("");
+  const [enquirySending, setEnquirySending] = useState(false);
+  const [enquirySent, setEnquirySent] = useState(false);
+
   useEffect(() => {
     fetchApartment();
     if (user) checkFavorite();
   }, [params.id]);
+
+  // Pre-fill enquiry name from profile
+  useEffect(() => {
+    if (profile?.full_name) setEnquiryName(profile.full_name);
+    if (profile?.phone) setEnquiryPhone(profile.phone);
+  }, [profile]);
 
   const fetchApartment = async () => {
     try {
@@ -139,12 +154,49 @@ export default function ApartmentDetailPage() {
       return;
     }
 
-    if (user.role === "LANDLORD") {
+    if (profile?.role === "LANDLORD") {
       toast.error("Landlords cannot book apartments");
       return;
     }
 
     router.push(`/apartments/${params.id}/book`);
+  };
+
+  const handleEnquiry = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) {
+      toast.error("Please sign in to send an enquiry");
+      router.push("/login");
+      return;
+    }
+    if (!apartment) return;
+    if (!enquiryMessage.trim()) {
+      toast.error("Please write a message");
+      return;
+    }
+
+    setEnquirySending(true);
+    try {
+      const subject = `Enquiry about: ${apartment.title}`;
+      const body = `Name: ${enquiryName}\nPhone: ${enquiryPhone || "Not provided"}\n\n${enquiryMessage.trim()}`;
+
+      const { error } = await supabase.from("messages").insert({
+        sender_id: user.id,
+        recipient_id: apartment.landlord_id,
+        apartment_id: apartment.id,
+        subject,
+        body,
+      });
+
+      if (error) throw error;
+
+      setEnquirySent(true);
+      toast.success("Enquiry sent to the landlord!");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to send enquiry");
+    } finally {
+      setEnquirySending(false);
+    }
   };
 
   const handleMessage = () => {
@@ -302,10 +354,10 @@ export default function ApartmentDetailPage() {
               </p>
             </div>
 
-            {/* Landlord */}
+            {/* Enquiry */}
             <div className="bg-white rounded-2xl border border-gray-100 p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-5">
-                Listed by
+                Contact Landlord
               </h2>
               <div className="flex items-center gap-4 mb-5">
                 <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -328,12 +380,89 @@ export default function ApartmentDetailPage() {
                   <p className="text-gray-500 text-sm">Property Owner</p>
                 </div>
               </div>
-              <button
-                onClick={handleMessage}
-                className="w-full py-3 px-4 border border-primary-200 text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-xl font-semibold transition-colors"
-              >
-                Send Message
-              </button>
+
+              {!user ? (
+                <div className="text-center py-4">
+                  <p className="text-gray-500 text-sm mb-3">
+                    Sign in to send an enquiry
+                  </p>
+                  <Link
+                    href={`/login?redirectTo=/apartments/${params.id}`}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors text-sm"
+                  >
+                    Sign In to Enquire
+                  </Link>
+                </div>
+              ) : enquirySent ? (
+                <div className="text-center py-6 bg-green-50 rounded-xl border border-green-100">
+                  <FaPaperPlane className="text-green-500 text-2xl mx-auto mb-3" />
+                  <p className="font-bold text-green-800 mb-1">Enquiry Sent!</p>
+                  <p className="text-green-600 text-sm">
+                    The landlord will get back to you soon.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleEnquiry} className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">
+                      Your Name
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      value={enquiryName}
+                      onChange={(e) => setEnquiryName(e.target.value)}
+                      placeholder="Full name"
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-green-500 focus:bg-white transition-colors text-sm text-gray-900 placeholder:text-gray-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <FaPhone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                      <input
+                        type="tel"
+                        value={enquiryPhone}
+                        onChange={(e) => setEnquiryPhone(e.target.value)}
+                        placeholder="+232 77 000 000"
+                        className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-green-500 focus:bg-white transition-colors text-sm text-gray-900 placeholder:text-gray-400"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">
+                      Message <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      required
+                      rows={4}
+                      value={enquiryMessage}
+                      onChange={(e) => setEnquiryMessage(e.target.value)}
+                      placeholder="Hi, I'm interested in this property. Is it still available?"
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-green-500 focus:bg-white transition-colors text-sm text-gray-900 placeholder:text-gray-400 resize-none"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={enquirySending}
+                    className="w-full py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
+                  >
+                    {enquirySending ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                        Sending…
+                      </>
+                    ) : (
+                      <>
+                        <FaPaperPlane />
+                        Send Enquiry
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
 

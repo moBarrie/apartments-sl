@@ -47,7 +47,7 @@ interface Booking {
 }
 
 export default function RenterDashboard() {
-  const { user } = useAuthStore();
+  const { user, profile, isLoading } = useAuthStore();
   const router = useRouter();
   const supabase = createClient();
 
@@ -59,19 +59,22 @@ export default function RenterDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Wait until auth has finished loading before checking
+    if (isLoading) return;
+
     if (!user) {
       router.push("/login");
       return;
     }
 
-    if (user.role !== "RENTER") {
+    if (profile?.role !== "RENTER") {
       toast.error("Access denied");
       router.push("/");
       return;
     }
 
     fetchData();
-  }, [user]);
+  }, [user, profile, isLoading]);
 
   const fetchData = async () => {
     try {
