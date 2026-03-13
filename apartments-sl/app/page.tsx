@@ -8,54 +8,59 @@ import {
   FaMapMarkerAlt,
   FaCheckCircle,
   FaMobileAlt,
+  FaArrowRight,
 } from "react-icons/fa";
 
 export default function Home() {
   return (
-    <>
+    <div className="bg-background">
       <Hero />
 
       {/* How it works */}
-      <section className="py-20 bg-white border-y border-gray-100">
+      <section className="py-32 relative overflow-hidden">
+        {/* Background Decorative Blob */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-500/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <p className="text-green-600 font-bold text-sm uppercase tracking-widest mb-3">
-              How it works
+          <div className="text-center mb-20">
+            <p className="text-green-600 font-bold text-xs uppercase tracking-[0.2em] mb-4">
+              Streamlined Process
             </p>
-            <h2 className="text-4xl font-black text-gray-900">
-              Find Your Home in 3 Steps
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
+              Secure Your Home in <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-primary-600">3 Steps</span>
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto relative z-10">
             {[
               {
                 step: "01",
-                title: "Search",
-                desc: "Browse listings in your city with filters for price, size, and amenities.",
-                icon: "🔍",
+                title: "Discover",
+                desc: "Explore an exclusive collection of verified properties tailored to your sophisticated lifestyle.",
+                icon: "✨",
               },
               {
                 step: "02",
-                title: "Choose",
-                desc: "View verified photos, read property details, and connect with the landlord.",
-                icon: "🏠",
+                title: "Evaluate",
+                desc: "Review high-resolution imagery and precise details before engaging with our vetted landlords.",
+                icon: "📐",
               },
               {
                 step: "03",
-                title: "Book",
-                desc: "Reserve your apartment securely and move in with confidence.",
-                icon: "✅",
+                title: "Secure",
+                desc: "Finalize your booking instantly through our encrypted, seamless reservation system.",
+                icon: "🗝️",
               },
             ].map(({ step, title, desc, icon }) => (
-              <div key={step} className="text-center">
-                <div className="w-16 h-16 bg-green-50 border-2 border-green-100 rounded-2xl flex items-center justify-center mx-auto mb-5 text-2xl">
+              <div key={step} className="group text-center flex flex-col items-center">
+                <div className="w-20 h-20 bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl flex items-center justify-center mb-8 text-3xl group-hover:scale-110 group-hover:shadow-[0_8px_30px_rgb(38,163,87,0.15)] transition-all duration-500">
                   {icon}
                 </div>
-                <p className="text-5xl font-black text-gray-100 mb-1">{step}</p>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <p className="text-7xl font-black text-slate-100 mb-2 group-hover:text-green-50 transition-colors duration-500 tracking-tighter">{step}</p>
+                <h3 className="text-2xl font-bold text-slate-900 mb-4 tracking-tight">
                   {title}
                 </h3>
-                <p className="text-gray-500 leading-relaxed">{desc}</p>
+                <p className="text-slate-500 leading-relaxed font-light">{desc}</p>
               </div>
             ))}
           </div>
@@ -63,141 +68,151 @@ export default function Home() {
       </section>
 
       {/* Featured Listings */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-32 bg-slate-50 border-y border-slate-200/60 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-12">
+          <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
             <div>
-              <p className="text-green-600 font-bold text-sm uppercase tracking-widest mb-2">
-                Featured
+              <p className="text-primary-600 font-bold text-xs uppercase tracking-[0.2em] mb-4">
+                Curated Selection
               </p>
-              <h2 className="text-4xl font-black text-gray-900">
-                Latest Listings
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
+                Featured Properties
               </h2>
             </div>
             <Link
               href="/apartments"
-              className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
+              className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-slate-200 text-slate-700 rounded-2xl font-semibold hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm transition-all group"
             >
-              View All →
+              View Collection
+              <FaArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 transition-colors group-hover:translate-x-1" />
             </Link>
           </div>
+          
           <FeaturedApartments />
-          <div className="mt-10 text-center md:hidden">
-            <Link
-              href="/apartments"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
-            >
-              View All Properties →
-            </Link>
-          </div>
+          
         </div>
       </section>
 
       {/* Why Us */}
-      <section className="py-20 bg-white">
+      <section className="py-32 relative overflow-hidden bg-white">
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary-500/5 rounded-full blur-[140px] -z-10 pointer-events-none" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <p className="text-primary-600 font-bold text-sm uppercase tracking-widest mb-3">
-              Why Us
+          <div className="text-center mb-20">
+            <p className="text-green-600 font-bold text-xs uppercase tracking-[0.2em] mb-4">
+              The Standard
             </p>
-            <h2 className="text-4xl font-black text-gray-900">
-              Why Choose Apartments.SL?
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">
+              Why Apartments.SL?
             </h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-              The most trusted rental platform in Sierra Leone
+            <p className="text-slate-500 text-lg max-w-2xl mx-auto font-light leading-relaxed">
+              We've redefined the rental experience to offer unparalleled convenience, security, and luxury for our exclusive clientele.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               {
                 icon: FaShieldAlt,
-                title: "Verified Listings",
-                desc: "Every property is verified and inspected before listing",
+                title: "Meticulously Verified",
+                desc: "Each property passes our rigorous 50-point inspection before it joins our exclusive collection.",
                 iconBg: "bg-green-50",
                 iconColor: "text-green-600",
+                borderColor: "group-hover:border-green-200"
               },
               {
                 icon: FaBolt,
-                title: "Instant Booking",
-                desc: "Reserve your home with our streamlined booking process",
-                iconBg: "bg-blue-50",
+                title: "Instant Residency",
+                desc: "Bypass traditional delays with our fully digitized, instant booking and contract system.",
+                iconBg: "bg-primary-50",
                 iconColor: "text-primary-600",
+                borderColor: "group-hover:border-primary-200"
               },
               {
                 icon: FaHeadset,
-                title: "24/7 Support",
-                desc: "Our dedicated team is always available to help you",
-                iconBg: "bg-green-50",
-                iconColor: "text-green-600",
+                title: "Concierge Support",
+                desc: "Our dedicated specialists are available 24/7 to ensure your complete satisfaction.",
+                iconBg: "bg-slate-50",
+                iconColor: "text-slate-700",
+                borderColor: "group-hover:border-slate-300"
               },
               {
                 icon: FaCheckCircle,
-                title: "No Hidden Fees",
-                desc: "Transparent pricing with no surprises at signing",
-                iconBg: "bg-blue-50",
+                title: "Transparent Integrity",
+                desc: "Absolutely no hidden fees, unexpected charges, or convoluted contract terms. Ever.",
+                iconBg: "bg-primary-50",
                 iconColor: "text-primary-600",
+                borderColor: "group-hover:border-primary-200"
               },
               {
                 icon: FaMapMarkerAlt,
-                title: "Prime Locations",
-                desc: "Properties in the best neighborhoods across all cities",
+                title: "Prestigious Locations",
+                desc: "We solely feature properties in the most desirable and secure neighborhoods.",
                 iconBg: "bg-green-50",
                 iconColor: "text-green-600",
+                borderColor: "group-hover:border-green-200"
               },
               {
                 icon: FaMobileAlt,
-                title: "Mobile Friendly",
-                desc: "Seamless experience on any device, anytime",
-                iconBg: "bg-blue-50",
-                iconColor: "text-primary-600",
+                title: "Seamless Platform",
+                desc: "Manage your residency elegantly from any device, anywhere in the world.",
+                iconBg: "bg-slate-50",
+                iconColor: "text-slate-700",
+                borderColor: "group-hover:border-slate-300"
               },
-            ].map(({ icon: Icon, title, desc, iconBg, iconColor }) => (
+            ].map(({ icon: Icon, title, desc, iconBg, iconColor, borderColor }) => (
               <div
                 key={title}
-                className="p-6 rounded-2xl border border-gray-100 bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                className={`p-8 rounded-[2rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] hover:-translate-y-2 transition-all duration-500 group ${borderColor}`}
               >
                 <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${iconBg}`}
+                  className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 ${iconBg}`}
                 >
-                  <Icon className={`text-xl ${iconColor}`} />
+                  <Icon className={`text-2xl ${iconColor}`} />
                 </div>
-                <h3 className="font-bold text-gray-900 mb-2">{title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-3 tracking-tight">{title}</h3>
+                <p className="text-slate-500 leading-relaxed font-light">{desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-gray-900">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <p className="text-green-400 font-bold text-sm uppercase tracking-widest mb-4">
-            Get Started
+      {/* Modern CTA */}
+      <section className="py-32 relative bg-slate-950 overflow-hidden">
+        {/* Dynamic Abstract Background */}
+        <div className="absolute inset-0 opacity-20 Mix-blend-overlay">
+           <div className="absolute w-[800px] h-[800px] bg-green-500 rounded-full blur-[150px] -top-96 -right-40 animate-blob"></div>
+           <div className="absolute w-[800px] h-[800px] bg-primary-600 rounded-full blur-[150px] -bottom-96 -left-40 animate-blob animation-delay-4000"></div>
+        </div>
+        
+        <div className="relative max-w-4xl mx-auto px-4 text-center z-10">
+          <p className="text-green-400 font-bold text-xs uppercase tracking-[0.2em] mb-6">
+            The Next Step
           </p>
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-5">
-            Ready to Find Your Dream Home?
+          <h2 className="text-5xl md:text-6xl font-black text-white mb-8 tracking-tight">
+            Ready to Elevate Your Living <span className="font-light italic text-slate-400">Experience?</span>
           </h2>
-          <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
-            Join thousands of Sierra Leoneans who found their perfect apartment
-            on Apartments.SL
+          <p className="text-slate-400 text-xl mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+            Join the elite community of residents who have already discovered their perfect sanctuary through our platform.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-5 justify-center">
             <Link
               href="/apartments"
-              className="inline-flex items-center justify-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold text-lg transition-colors"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white rounded-2xl font-bold tracking-wide transition-all shadow-[0_0_30px_rgba(38,163,87,0.3)] hover:shadow-[0_0_40px_rgba(38,163,87,0.5)] group"
             >
-              Browse Apartments
+              Browse Collection
+              <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/signup"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white/10 border border-white/20 text-white rounded-xl font-bold text-lg hover:bg-white/20 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 glass text-white rounded-2xl font-bold tracking-wide hover:bg-white/10 border-white/20 transition-all"
             >
               List Your Property
             </Link>
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
