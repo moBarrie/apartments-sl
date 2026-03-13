@@ -178,15 +178,13 @@ export default function ApartmentDetailPage() {
 
     setEnquirySending(true);
     try {
-      const subject = `Enquiry about: ${apartment.title}`;
-      const body = `Name: ${enquiryName}\nPhone: ${enquiryPhone || "Not provided"}\n\n${enquiryMessage.trim()}`;
+      const content = `[Enquiry: ${apartment.title}]\nName: ${enquiryName}\nPhone: ${enquiryPhone || "Not provided"}\n\n${enquiryMessage.trim()}`;
 
       const { error } = await supabase.from("messages").insert({
         sender_id: user.id,
         recipient_id: apartment.landlord_id,
         apartment_id: apartment.id,
-        subject,
-        body,
+        content,
       });
 
       if (error) throw error;
