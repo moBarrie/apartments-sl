@@ -12,16 +12,12 @@ import {
 } from "react-icons/fa";
 import { useAuthStore } from "@/store/authStore";
 
-// Modern Sierra Leone Flag Logo
-function SierraLeoneFlag() {
+// Premium Logo
+function PremiumLogo() {
   return (
-    <div className="relative w-12 h-12 rounded-xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110">
-      <div className="absolute top-0 left-0 right-0 h-[33.33%] bg-gradient-to-r from-green-500 to-green-600"></div>
-      <div className="absolute top-[33.33%] left-0 right-0 h-[33.33%] bg-white"></div>
-      <div className="absolute bottom-0 left-0 right-0 h-[33.33%] bg-gradient-to-r from-primary-500 to-primary-600"></div>
-      <div className="absolute inset-0 flex items-center justify-center backdrop-blur-[2px]">
-        <FaBuilding className="w-6 h-6 text-gray-900 drop-shadow-lg" />
-      </div>
+    <div className="relative w-12 h-12 rounded-2xl overflow-hidden shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center border border-white/10">
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-green-500/20 to-transparent"></div>
+      <FaBuilding className="w-5 h-5 text-green-400 drop-shadow-md z-10" />
     </div>
   );
 }
@@ -32,11 +28,13 @@ export default function Navbar() {
   const { profile, user, signOut } = useAuthStore();
 
   const navLinkClass =
-    "inline-flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-primary-700 transition-colors px-4 py-2.5 rounded-xl hover:bg-primary-50";
+    "inline-flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors px-4 py-2 rounded-xl hover:bg-white/5";
+    
   const ghostButtonClass =
-    "inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-semibold text-primary-800 border border-primary-200 bg-primary-50 hover:bg-primary-100 hover:border-primary-300 transition-all";
+    "inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white border border-white/5 bg-white/5 hover:bg-white/10 transition-all backdrop-blur-md";
+    
   const primaryButtonClass =
-    "inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl transition-all";
+    "inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 shadow-[0_0_20px_rgba(38,163,87,0.3)] hover:shadow-[0_0_30px_rgba(38,163,87,0.5)] transition-all";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,32 +46,32 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-white/90 backdrop-blur-xl shadow-lg border-b border-gray-200"
-          : "bg-white/95 border-b border-gray-100"
+          ? "bg-slate-950/80 backdrop-blur-2xl shadow-2xl border-b border-white/5 py-3"
+          : "bg-transparent py-5"
       }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          <Link href="/" className="flex items-center gap-3 group">
-            <SierraLeoneFlag />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-14">
+          <Link href="/" className="flex items-center gap-4 group">
+            <PremiumLogo />
             <div className="flex flex-col">
-              <span className="text-2xl font-bold text-gray-900 leading-tight">
-                Apartments<span className="text-green-600">.SL</span>
+              <span className={`text-2xl font-black leading-tight tracking-tight ${scrolled ? 'text-white' : 'text-white'}`}>
+                Apartments<span className="text-green-500">.SL</span>
               </span>
-              <span className="text-[10px] text-gray-500 font-medium tracking-wider uppercase">
-                Find Your Home
+              <span className={`text-[9px] font-bold tracking-[0.2em] uppercase ${scrolled ? 'text-slate-400' : 'text-slate-300'}`}>
+                Premium Real Estate
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-3">
-            <div className="flex items-center p-1 rounded-2xl border border-gray-200 bg-white shadow-sm">
+          <div className="hidden lg:flex items-center gap-4">
+            <div className="flex items-center p-1.5 rounded-full border border-white/10 glass-dark shadow-inner">
               <Link href="/apartments" className={navLinkClass}>
-                <FaSearch className="w-4 h-4" />
-                <span>Browse</span>
+                <FaSearch className="w-3.5 h-3.5" />
+                <span>Search</span>
               </Link>
 
               {user && profile && (
@@ -85,41 +83,37 @@ export default function Navbar() {
                   }
                   className={navLinkClass}
                 >
-                  <FaBuilding className="w-4 h-4" />
+                  <FaBuilding className="w-3.5 h-3.5" />
                   <span>Dashboard</span>
                 </Link>
               )}
             </div>
 
             {user && profile ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4 ml-4 pl-4 border-l border-white/10">
                 <Link href="/profile" className={ghostButtonClass}>
-                  <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-primary-500 rounded-lg flex items-center justify-center shadow-sm">
-                    <FaUser className="w-4 h-4 text-white" />
+                  <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
+                    <FaUser className="w-3 h-3 text-white" />
                   </div>
                   <span className="max-w-[120px] truncate">
                     {profile.full_name}
                   </span>
                 </Link>
 
-                <Link href="/apartments" className={primaryButtonClass}>
-                  <span>Explore Homes</span>
-                  <FaArrowRight className="w-3.5 h-3.5" />
-                </Link>
                 <button
                   onClick={signOut}
-                  className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold text-red-600 border border-red-100 bg-red-50 hover:bg-red-100 transition-colors"
+                  className="inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-medium text-red-400 border border-red-500/20 bg-red-500/10 hover:bg-red-500/20 hover:text-red-300 transition-colors"
                 >
                   Logout
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-white/10">
                 <Link href="/login" className={ghostButtonClass}>
-                  Log In
+                  Sign In
                 </Link>
                 <Link href="/signup" className={primaryButtonClass}>
-                  Sign Up
+                  Get Started
                 </Link>
               </div>
             )}
@@ -127,29 +121,29 @@ export default function Navbar() {
 
           {/* Mobile Toggle */}
           <button
-            className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors"
+            className={`lg:hidden p-3 rounded-full hover:bg-white/10 transition-colors ${scrolled ? 'text-white' : 'text-white'}`}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle navigation menu"
           >
             {isOpen ? (
-              <FaTimes className="w-6 h-6 text-gray-900" />
+              <FaTimes className="w-5 h-5" />
             ) : (
-              <FaBars className="w-6 h-6 text-gray-900" />
+              <FaBars className="w-5 h-5" />
             )}
           </button>
         </div>
 
         {/* Mobile Nav */}
         {isOpen && (
-          <div className="lg:hidden py-5 border-t border-gray-200 bg-white/95 backdrop-blur-xl animate-slide-in-right">
-            <div className="flex flex-col gap-3">
+          <div className="lg:hidden absolute top-full left-0 right-0 mt-2 mx-4 rounded-3xl border border-white/10 bg-slate-950/95 backdrop-blur-3xl shadow-2xl p-6 animate-fade-in-up">
+            <div className="flex flex-col gap-4">
               <Link
                 href="/apartments"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 bg-white hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 text-gray-700 font-semibold transition-all"
+                className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-all"
               >
-                <FaSearch className="w-4 h-4" />
-                <span>Browse Apartments</span>
+                <FaSearch className="w-4 h-4 text-green-400" />
+                <span>Search Properties</span>
               </Link>
 
               {user && profile ? (
@@ -161,18 +155,18 @@ export default function Navbar() {
                         : "/dashboard/renter"
                     }
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 bg-white hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 text-gray-700 font-semibold transition-all"
+                    className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-all"
                   >
-                    <FaBuilding className="w-4 h-4" />
+                    <FaBuilding className="w-4 h-4 text-green-400" />
                     <span>Dashboard</span>
                   </Link>
                   <Link
                     href="/profile"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 bg-white hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 text-gray-700 font-semibold transition-all"
+                    className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-all"
                   >
-                    <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-primary-500 rounded-lg flex items-center justify-center shadow-md">
-                      <FaUser className="w-4 h-4 text-white" />
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md">
+                      <FaUser className="w-3 h-3 text-white" />
                     </div>
                     <span>{profile.full_name}</span>
                   </Link>
@@ -181,28 +175,28 @@ export default function Navbar() {
                       signOut();
                       setIsOpen(false);
                     }}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl border border-red-100 bg-red-50 hover:bg-red-100 text-red-600 font-semibold transition-all text-left"
+                    className="flex items-center gap-3 px-5 py-3.5 rounded-xl border border-red-500/20 bg-red-500/10 text-red-400 font-medium transition-all"
                   >
-                    <span>Logout</span>
+                    <span>Sign Out</span>
                   </button>
                 </>
               ) : (
-                <>
+                <div className="grid grid-cols-2 gap-3 mt-2">
                   <Link
                     href="/login"
                     onClick={() => setIsOpen(false)}
-                    className="px-4 py-3 rounded-xl border border-primary-200 bg-primary-50 hover:bg-primary-100 text-primary-800 font-semibold transition-all text-center"
+                    className="px-5 py-3 rounded-xl border border-white/10 bg-white/5 text-white font-medium text-center hover:bg-white/10 transition-colors"
                   >
-                    Log In
+                    Sign In
                   </Link>
                   <Link
                     href="/signup"
                     onClick={() => setIsOpen(false)}
-                    className="px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all text-center shadow-lg"
+                    className="px-5 py-3 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl text-center shadow-lg transition-all"
                   >
                     Sign Up
                   </Link>
-                </>
+                </div>
               )}
             </div>
           </div>
