@@ -78,13 +78,18 @@ BEGIN
     COALESCE(NEW.raw_user_meta_data->>'full_name', 'User'),
     COALESCE(NEW.raw_user_meta_data->>'role', 'RENTER')::user_role
   )
-  ON CONFLICT (id) DO NOTHING;
+  ON CONFLICT (id) DO UPDATE SET
+    email = EXCLUDED.email,
+    full_name = EXCLUDED.full_name,
+    role = EXCLUDED.role;
 
+  -- Re-handle landlord profile if needed
   IF (NEW.raw_user_meta_data->>'role' = 'LANDLORD') THEN
     INSERT INTO public.landlord_profiles (user_id)
     VALUES (NEW.id)
     ON CONFLICT (user_id) DO NOTHING;
   END IF;
+
 
   RETURN NEW;
 END;

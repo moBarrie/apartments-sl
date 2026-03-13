@@ -58,18 +58,23 @@ export const useAuthStore = create<AuthState>()(
             password,
           });
           if (error) {
-            if (
-              error.message.toLowerCase().includes("email not confirmed") ||
-              error.message.toLowerCase().includes("invalid login")
-            ) {
+            const msg = error.message.toLowerCase();
+            if (msg.includes("email not confirmed")) {
               throw new Error(
-                "Email not confirmed. Please check your inbox and click the confirmation link, then try again.",
+                "Your email address has not been confirmed yet. Please check your inbox for a verification link.",
               );
+            }
+            if (msg.includes("invalid login")) {
+              throw new Error("Invalid email or password. Please try again.");
             }
             throw error;
           }
 
-          let profile = await loadProfile(supabase, data.user.id);
+          let { data: profile, error: fetchError } = await supabase
+            .from("users")
+            .select("id, email, full_name, phone, role, avatar_url")
+            .eq("id", data.user.id)
+            .single();
 
           // Self-healing: if the trigger didn't create the profile row, create it now
           if (!profile) {
@@ -79,30 +84,38 @@ export const useAuthStore = create<AuthState>()(
             const full_name: string =
               meta.full_name ?? email.split("@")[0] ?? "User";
 
-            await supabase.from("users").upsert(
+            const { error: upsertError } = await supabase.from("users").upsert(
               { id: data.user.id, email, full_name, role },
               { onConflict: "id" },
             );
 
-            if (role === "LANDLORD") {
-              await supabase
-                .from("landlord_profiles")
-                .upsert({ user_id: data.user.id }, { onConflict: "user_id" });
+            if (upsertError) {
+              await supabase.auth.signOut();
+              set({ user: null, profile: null, isLoading: false });
+              throw new Error(
+                `Database error: ${upsertError.message}. Did you run the 'fix_auth_only.sql' script in Supabase?`,
+              );
             }
 
-            profile = await loadProfile(supabase, data.user.id);
-          }
+            // Try fetching one last time
+            const { data: finalProfile, error: finalError } = await supabase
+              .from("users")
+              .select("id, email, full_name, phone, role, avatar_url")
+              .eq("id", data.user.id)
+              .single();
 
-          if (!profile) {
-            // Still null — RLS is blocking the read. Sign out cleanly.
-            await supabase.auth.signOut();
-            set({ user: null, profile: null, isLoading: false });
-            throw new Error(
-              "Could not load your account. Please ensure the database migrations have been applied (see README), then try again.",
-            );
+            if (!finalProfile) {
+              await supabase.auth.signOut();
+              set({ user: null, profile: null, isLoading: false });
+              throw new Error(
+                `Profile load failed: ${finalError?.message || "Unknown error"}. Please check your database RLS policies.`,
+              );
+            }
+            profile = finalProfile;
           }
 
           set({ user: data.user, profile, isLoading: false });
+
         } catch (err) {
           set({ isLoading: false });
           throw err;
@@ -133,22 +146,35 @@ export const useAuthStore = create<AuthState>()(
 
           // Session exists: either email confirmation is disabled, or the user
           // already confirmed.  Load the profile (trigger should have created
-          // it; fall back to a direct insert just in case).
-          let profile = await loadProfile(supabase, data.user.id);
+          // it; fall back to a direct upsert just in case).
+          let { data: profile } = await supabase
+            .from("users")
+            .select("id, email, full_name, role")
+            .eq("id", data.user.id)
+            .single();
+
           if (!profile) {
-            await supabase
-              .from("users")
-              .insert({ id: data.user.id, email, full_name: fullName, role })
-              .single();
+            await supabase.from("users").upsert(
+              { id: data.user.id, email, full_name: fullName, role },
+              { onConflict: "id" },
+            );
+
             if (role === "LANDLORD") {
               await supabase
                 .from("landlord_profiles")
-                .insert({ user_id: data.user.id });
+                .upsert({ user_id: data.user.id }, { onConflict: "user_id" });
             }
-            profile = await loadProfile(supabase, data.user.id);
+
+            const { data: finalProfile } = await supabase
+              .from("users")
+              .select("id, email, full_name, role")
+              .eq("id", data.user.id)
+              .single();
+            profile = finalProfile;
           }
 
-          set({ user: data.user, profile, isLoading: false });
+          set({ user: data.user, profile: profile as any, isLoading: false });
+
         } catch (err) {
           set({ isLoading: false });
           throw err;
