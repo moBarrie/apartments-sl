@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,6 +11,8 @@ import {
   FaMapMarkerAlt,
   FaHeart,
   FaRegHeart,
+  FaSearch,
+  FaFilter,
 } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import { useAuthStore } from "@/store/authStore";
@@ -28,7 +30,7 @@ interface Apartment {
   apartment_images: { url: string }[];
 }
 
-export default function ApartmentsPage() {
+function ApartmentsContent() {
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
@@ -47,6 +49,7 @@ export default function ApartmentsPage() {
   }, [city, minPrice, bedrooms]);
 
   const fetchApartments = async () => {
+    setLoading(true);
     try {
       let query = supabase
         .from("apartments")
@@ -59,9 +62,9 @@ export default function ApartmentsPage() {
         .eq("status", "APPROVED")
         .order("created_at", { ascending: false });
 
-      if (city) query = query.ilike("city", `%${city}%`);
-      if (minPrice) query = query.gte("price_per_month", parseFloat(minPrice));
-      if (bedrooms) query = query.gte("bedrooms", parseInt(bedrooms));
+      if (city && city.trim() !== "") query = query.ilike("city", `%${city}%`);
+      if (minPrice && minPrice.trim() !== "") query = query.gte("price_per_month", parseFloat(minPrice));
+      if (bedrooms && bedrooms.trim() !== "") query = query.gte("bedrooms", parseInt(bedrooms));
 
       const { data, error } = await query;
 
@@ -126,137 +129,162 @@ export default function ApartmentsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Page header */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-black text-gray-900 mb-1">
-            Find Your Home
-          </h1>
-          <p className="text-gray-500">
-            <span className="font-semibold text-primary-600">
-              {apartments.length}
-            </span>{" "}
-            {apartments.length === 1 ? "property" : "properties"} available
-            {city && (
-              <>
-                {" "}
-                in <span className="font-semibold text-gray-900">{city}</span>
-              </>
-            )}
-          </p>
+    <div className="min-h-screen bg-slate-50 pt-24 pb-20 font-sans">
+      {/* Search Header Banner */}
+      <div className="bg-white border-b border-slate-200/60 shadow-sm relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <p className="text-green-600 font-bold text-xs uppercase tracking-[0.2em] mb-3">
+                Property Portfolio
+              </p>
+              <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-2">
+                Discover Properties
+              </h1>
+              <p className="text-slate-500 font-light text-lg">
+                <span className="font-semibold text-slate-900">
+                  {loading ? "..." : apartments.length}
+                </span>{" "}
+                {apartments.length === 1 ? "residence" : "residences"} matching your criteria
+                {city && (
+                  <>
+                    {" "}
+                    in <span className="font-medium text-slate-900">{city}</span>
+                  </>
+                )}
+              </p>
+            </div>
+            
+            <Link href="/" className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100/80 hover:bg-slate-200 text-slate-600 text-sm font-semibold rounded-xl transition-colors self-start md:self-auto">
+              <FaFilter className="w-3.5 h-3.5" />
+              Adjust Filters
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
+         {/* Background Decoration */}
+         <div className="absolute top-20 right-10 w-[400px] h-[400px] bg-green-500/5 rounded-full blur-[100px] pointer-events-none" />
+
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse"
+                className="bg-white rounded-[2rem] border border-slate-100 overflow-hidden animate-pulse shadow-sm"
               >
-                <div className="h-52 bg-gray-200" />
-                <div className="p-5 space-y-3">
-                  <div className="h-4 bg-gray-200 rounded w-3/4" />
-                  <div className="h-3 bg-gray-200 rounded w-1/2" />
-                  <div className="h-4 bg-gray-200 rounded w-1/3" />
+                <div className="h-64 bg-slate-200" />
+                <div className="p-8 space-y-4">
+                  <div className="h-5 bg-slate-200 rounded-full w-3/4" />
+                  <div className="h-4 bg-slate-200 rounded-full w-1/2" />
+                  <div className="h-4 bg-slate-200 rounded-full w-1/3 mt-4" />
                 </div>
               </div>
             ))}
           </div>
         ) : apartments.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-gray-100 p-16 text-center">
-            <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <FaBed className="text-gray-400 text-2xl" />
+          <div className="bg-white rounded-[2rem] border border-slate-100 p-20 text-center shadow-lg relative overflow-hidden">
+             <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none" />
+            <div className="w-24 h-24 bg-slate-50 border border-slate-100 rounded-[2rem] flex items-center justify-center mx-auto mb-8 relative z-10">
+              <FaSearch className="text-slate-300 text-4xl" />
             </div>
-            <p className="text-gray-900 text-xl font-bold mb-2">
-              No properties found
-            </p>
-            <p className="text-gray-500 mb-6">
-              Try adjusting your filters or browse all properties
+            <h2 className="text-slate-900 text-2xl font-black tracking-tight mb-3 relative z-10">
+              No Properties Found
+            </h2>
+            <p className="text-slate-500 mb-8 max-w-md mx-auto font-light leading-relaxed relative z-10">
+              We couldn't find any residences matching your exact specifications. Try adjusting your filters or explore our full collection.
             </p>
             <Link
               href="/apartments"
-              className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition-colors"
+              className="inline-flex items-center px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-bold transition-all hover:shadow-[0_10px_20px_rgba(0,0,0,0.1)] relative z-10"
             >
-              View All Properties
+              Clear Filters
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {apartments.map((apartment) => (
               <div
                 key={apartment.id}
-                className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                className="group flex flex-col bg-white rounded-[2rem] border border-slate-100 overflow-hidden hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] hover:-translate-y-2 transition-all duration-500 relative z-10"
               >
-                <Link href={`/apartments/${apartment.id}`}>
-                  <div className="relative h-52 bg-gray-100 overflow-hidden">
-                    {apartment.apartment_images?.[0]?.url ? (
-                      <Image
-                        src={apartment.apartment_images[0].url}
-                        alt={apartment.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <FaBed className="text-gray-300 text-5xl" />
-                      </div>
-                    )}
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleFavorite(apartment.id);
-                      }}
-                      className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
-                    >
-                      {favorites.has(apartment.id) ? (
-                        <FaHeart className="text-red-500 w-4 h-4" />
-                      ) : (
-                        <FaRegHeart className="text-gray-500 w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
+                <Link href={`/apartments/${apartment.id}`} className="block relative h-64 bg-slate-100 overflow-hidden">
+                  {apartment.apartment_images?.[0]?.url ? (
+                    <Image
+                      src={apartment.apartment_images[0].url}
+                      alt={apartment.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-50">
+                      <FaBed className="text-slate-300 text-5xl" />
+                    </div>
+                  )}
+                  
+                  {/* Subtle Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                 </Link>
 
-                <div className="p-5">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleFavorite(apartment.id);
+                  }}
+                  className="absolute top-5 right-5 w-10 h-10 glass-dark rounded-full shadow-lg flex items-center justify-center hover:bg-white/20 transition-colors z-20 backdrop-blur-md"
+                >
+                  {favorites.has(apartment.id) ? (
+                    <FaHeart className="text-red-500 w-4 h-4 transform scale-110 transition-transform" />
+                  ) : (
+                    <FaRegHeart className="text-white drop-shadow-md w-4 h-4 transition-transform hover:scale-110" />
+                  )}
+                </button>
+
+                <div className="p-8 flex flex-col flex-1 bg-white">
                   <Link href={`/apartments/${apartment.id}`}>
-                    <h3 className="font-bold text-gray-900 text-lg mb-1 line-clamp-1 group-hover:text-primary-600 transition-colors">
+                    <h3 className="font-bold text-slate-900 text-xl mb-2 line-clamp-1 group-hover:text-green-600 transition-colors tracking-tight">
                       {apartment.title}
                     </h3>
                   </Link>
-                  <p className="text-gray-500 text-sm flex items-center gap-1.5 mb-4">
+                  <p className="text-slate-500 text-sm flex items-center gap-2 mb-6 font-light">
                     <FaMapMarkerAlt className="text-green-500 flex-shrink-0" />
                     {apartment.city}, Sierra Leone
                   </p>
-                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                    <span className="flex items-center gap-1.5">
-                      <FaBed className="text-primary-500" />
-                      {apartment.bedrooms} bd
+                  
+                  <div className="flex items-center gap-6 text-sm text-slate-600 mb-6 pb-6 border-b border-slate-100/80">
+                    <span className="flex items-center gap-2 font-medium">
+                      <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-primary-500 group-hover:bg-primary-50 transition-colors">
+                        <FaBed className="w-3.5 h-3.5" />
+                      </div>
+                      {apartment.bedrooms} <span className="text-slate-400 font-light">Beds</span>
                     </span>
-                    <span className="flex items-center gap-1.5">
-                      <FaBath className="text-primary-500" />
-                      {apartment.bathrooms} ba
+                    <span className="flex items-center gap-2 font-medium">
+                      <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-primary-500 group-hover:bg-primary-50 transition-colors">
+                        <FaBath className="w-3.5 h-3.5" />
+                      </div>
+                      {apartment.bathrooms} <span className="text-slate-400 font-light">Baths</span>
                     </span>
                     {apartment.square_feet && (
-                      <span className="text-gray-400">
+                      <span className="text-slate-400 font-light ml-auto">
                         {apartment.square_feet} ft²
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                  
+                  <div className="flex items-center justify-between mt-auto">
                     <div>
-                      <span className="text-2xl font-black text-gray-900">
-                        Le {apartment.price_per_month.toLocaleString()}
+                      <span className="text-3xl font-black text-slate-900 tracking-tight">
+                        <span className="text-sm font-medium text-slate-400 mr-1">Le</span>
+                        {apartment.price_per_month.toLocaleString()}
                       </span>
-                      <span className="text-gray-500 text-sm"> /mo</span>
+                      <span className="text-slate-400 text-sm font-light"> /mo</span>
                     </div>
                     <Link
                       href={`/apartments/${apartment.id}`}
-                      className="text-sm font-semibold text-primary-600 hover:underline"
+                      className="text-sm font-bold text-white bg-slate-900 px-5 py-2.5 rounded-xl hover:bg-green-600 transition-colors shadow-md hover:shadow-lg"
                     >
-                      View →
+                      Details
                     </Link>
                   </div>
                 </div>
@@ -266,5 +294,19 @@ export default function ApartmentsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ApartmentsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-slate-50 pt-32 pb-20 flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-green-500/20 border-t-green-500 rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <ApartmentsContent />
+    </Suspense>
   );
 }
