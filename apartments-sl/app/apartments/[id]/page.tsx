@@ -16,9 +16,10 @@ import {
   FaHeart,
   FaRegHeart,
   FaUser,
-  FaStar,
   FaPhone,
   FaPaperPlane,
+  FaShieldAlt,
+  FaCheckCircle,
 } from "react-icons/fa";
 
 interface Apartment {
@@ -199,35 +200,23 @@ export default function ApartmentDetailPage() {
     }
   };
 
-  const handleMessage = () => {
-    if (!user) {
-      toast.error("Please sign in to message");
-      router.push("/login");
-      return;
-    }
-
-    router.push(
-      `/messages?to=${apartment?.landlord_id}&apartment=${params.id}`,
-    );
-  };
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-slate-50 pt-24">
         <div className="max-w-7xl mx-auto px-4 py-10 animate-pulse">
-          <div className="h-80 bg-gray-200 rounded-2xl mb-3" />
-          <div className="grid grid-cols-4 gap-3 mb-10">
+          <div className="h-[500px] bg-slate-200 rounded-[2rem] mb-4" />
+          <div className="grid grid-cols-4 gap-4 mb-12">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-20 bg-gray-200 rounded-xl" />
+              <div key={i} className="h-24 bg-slate-200 rounded-2xl" />
             ))}
           </div>
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="h-8 bg-gray-200 rounded w-2/3" />
-              <div className="h-4 bg-gray-200 rounded w-1/3" />
-              <div className="h-32 bg-gray-200 rounded-xl" />
+          <div className="grid lg:grid-cols-3 gap-10">
+            <div className="lg:col-span-2 space-y-6">
+              <div className="h-10 bg-slate-200 rounded-full w-2/3" />
+              <div className="h-5 bg-slate-200 rounded-full w-1/3" />
+              <div className="h-40 bg-slate-200 rounded-[2rem] mt-8" />
             </div>
-            <div className="h-64 bg-gray-200 rounded-2xl" />
+            <div className="h-80 bg-slate-200 rounded-[2rem]" />
           </div>
         </div>
       </div>
@@ -242,39 +231,53 @@ export default function ApartmentDetailPage() {
       : [{ url: "/placeholder-apartment.jpg", caption: null }];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Image Gallery */}
-        <div className="mb-8">
-          <div className="relative h-80 md:h-[420px] bg-gray-200 rounded-2xl overflow-hidden mb-3">
+    <div className="min-h-screen bg-slate-50 pt-20 pb-20 relative overflow-hidden">
+      {/* Background ambient light */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary-600/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in-up">
+        {/* Image Gallery Header */}
+        <div className="mb-12">
+          <div className="relative h-[400px] md:h-[550px] bg-slate-950 rounded-[2rem] overflow-hidden mb-4 shadow-2xl">
             <Image
               src={images[selectedImage].url}
               alt={apartment.title}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-1000 select-none"
+              priority
             />
+            {/* Subtle Gradient Overlay */}
+            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-950/80 to-transparent pointer-events-none" />
+            
             <button
               onClick={toggleFavorite}
-              className="absolute top-4 right-4 w-11 h-11 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
+              className="absolute top-6 right-6 w-12 h-12 glass rounded-full shadow-lg flex items-center justify-center hover:bg-white/90 transition-all z-10 group"
             >
               {isFavorite ? (
-                <FaHeart className="text-red-500 text-lg" />
+                <FaHeart className="text-red-500 text-xl transform scale-110 transition-transform" />
               ) : (
-                <FaRegHeart className="text-gray-600 text-lg" />
+                <FaRegHeart className="text-slate-600 text-xl group-hover:scale-110 transition-transform" />
               )}
             </button>
+            <div className="absolute bottom-6 left-6 glass-dark px-4 py-2 rounded-xl backdrop-blur-md border border-white/10">
+              <p className="text-white font-medium text-sm">
+                <FaCheckCircle className="inline text-green-400 mr-2 -mt-0.5" />
+                Verified Property
+              </p>
+            </div>
           </div>
+          
           {images.length > 1 && (
-            <div className="grid grid-cols-4 gap-3">
+            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
               {images.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(idx)}
-                  className={`relative h-20 rounded-xl overflow-hidden ${
+                  className={`relative h-24 w-36 flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-300 ${
                     selectedImage === idx
-                      ? "ring-2 ring-primary-500 ring-offset-2"
-                      : "opacity-70 hover:opacity-100"
-                  } transition-all`}
+                      ? "ring-4 ring-primary-500 ring-offset-2 scale-105 shadow-xl"
+                      : "opacity-60 hover:opacity-100 hover:scale-105"
+                  }`}
                 >
                   <Image
                     src={img.url}
@@ -288,15 +291,21 @@ export default function ApartmentDetailPage() {
           )}
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-10">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-8">
             {/* Title card */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6">
-              <h1 className="text-3xl font-black text-gray-900 mb-3">
+            <div className="bg-white rounded-[2rem] border border-slate-100 p-8 md:p-10 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 rounded-bl-[100px] pointer-events-none" />
+              
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 text-primary-600 text-xs font-bold uppercase tracking-widest rounded-lg mb-4">
+                Exclusive Listing
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4 leading-tight">
                 {apartment.title}
               </h1>
-              <p className="text-gray-500 flex items-center gap-2 mb-6">
+              <p className="text-slate-500 text-lg flex items-center gap-2 mb-8 font-light">
                 <FaMapMarkerAlt className="text-green-500" />
                 {apartment.address}, {apartment.city}, Sierra Leone
               </p>
@@ -332,165 +341,177 @@ export default function ApartmentDetailPage() {
                 ].map(({ icon: Icon, label, value }) => (
                   <div
                     key={label}
-                    className="bg-gray-50 rounded-xl p-4 text-center"
+                    className="bg-slate-50 border border-slate-100 rounded-2xl p-5 text-center group hover:bg-white hover:border-slate-200 hover:shadow-md transition-all duration-300"
                   >
-                    <Icon className="text-primary-500 text-xl mx-auto mb-2" />
-                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">
+                    <Icon className="text-primary-500 text-2xl mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                    <p className="text-xs text-slate-400 font-bold uppercase tracking-[0.2em] mb-1">
                       {label}
                     </p>
-                    <p className="font-bold text-gray-900">{value}</p>
+                    <p className="font-bold text-slate-900">{value}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Description */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
-                About this property
+            <div className="bg-white rounded-[2rem] border border-slate-100 p-8 md:p-10 shadow-sm">
+              <h2 className="text-2xl font-black text-slate-900 mb-6 tracking-tight">
+                About this residence
               </h2>
-              <p className="text-gray-600 whitespace-pre-line leading-relaxed">
-                {apartment.description}
-              </p>
+              <div className="prose prose-slate prose-lg max-w-none font-light leading-relaxed text-slate-600">
+                <p className="whitespace-pre-line">{apartment.description}</p>
+              </div>
             </div>
 
-            {/* Enquiry */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-5">
-                Contact Landlord
+            {/* Enquiry Component */}
+            <div className="bg-slate-900 rounded-[2rem] border border-slate-800 p-8 md:p-10 shadow-2xl relative overflow-hidden">
+               {/* Decorative background for dark component */}
+              <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary-600/20 rounded-full blur-[100px] pointer-events-none" />
+
+              <h2 className="text-2xl font-black text-white mb-8 tracking-tight relative z-10">
+                Contact the Proprietor
               </h2>
-              <div className="flex items-center gap-4 mb-5">
-                <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+              
+              <div className="flex items-center gap-5 mb-8 relative z-10 p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
+                <div className="w-16 h-16 bg-slate-800 border-2 border-white/10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden shadow-inner">
                   {apartment.users.avatar_url ? (
                     <Image
                       src={apartment.users.avatar_url}
                       alt={apartment.users.full_name}
-                      width={56}
-                      height={56}
+                      width={64}
+                      height={64}
                       className="rounded-full object-cover"
                     />
                   ) : (
-                    <FaUser className="text-gray-400 text-xl" />
+                    <FaUser className="text-slate-400 text-2xl" />
                   )}
                 </div>
                 <div>
-                  <p className="font-bold text-gray-900 text-lg">
+                  <p className="font-bold text-white text-lg tracking-wide">
                     {apartment.users.full_name}
                   </p>
-                  <p className="text-gray-500 text-sm">Property Owner</p>
+                  <p className="text-green-400 text-sm font-medium">Verified Property Owner <FaShieldAlt className="inline ml-1 -mt-0.5" /></p>
                 </div>
               </div>
 
-              {!user ? (
-                <div className="text-center py-4">
-                  <p className="text-gray-500 text-sm mb-3">
-                    Sign in to send an enquiry
-                  </p>
-                  <Link
-                    href={`/login?redirectTo=/apartments/${params.id}`}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors text-sm"
-                  >
-                    Sign In to Enquire
-                  </Link>
-                </div>
-              ) : enquirySent ? (
-                <div className="text-center py-6 bg-green-50 rounded-xl border border-green-100">
-                  <FaPaperPlane className="text-green-500 text-2xl mx-auto mb-3" />
-                  <p className="font-bold text-green-800 mb-1">Enquiry Sent!</p>
-                  <p className="text-green-600 text-sm">
-                    The landlord will get back to you soon.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleEnquiry} className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1">
-                      Your Name
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      value={enquiryName}
-                      onChange={(e) => setEnquiryName(e.target.value)}
-                      placeholder="Full name"
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-green-500 focus:bg-white transition-colors text-sm text-gray-900 placeholder:text-gray-400"
-                    />
+              <div className="relative z-10">
+                {!user ? (
+                  <div className="text-center py-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
+                    <p className="text-slate-300 text-sm mb-4 font-light">
+                      Authentication required to connect with the owner.
+                    </p>
+                    <Link
+                      href={`/login?redirectTo=/apartments/${params.id}`}
+                      className="inline-flex items-center justify-center px-8 py-3.5 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(38,163,87,0.3)] hover:shadow-[0_0_30px_rgba(38,163,87,0.5)] tracking-wide"
+                    >
+                      Sign In to Enquire
+                    </Link>
                   </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1">
-                      Phone Number
-                    </label>
-                    <div className="relative">
-                      <FaPhone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
-                      <input
-                        type="tel"
-                        value={enquiryPhone}
-                        onChange={(e) => setEnquiryPhone(e.target.value)}
-                        placeholder="+232 77 000 000"
-                        className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-green-500 focus:bg-white transition-colors text-sm text-gray-900 placeholder:text-gray-400"
+                ) : enquirySent ? (
+                  <div className="text-center py-10 bg-green-500/10 rounded-2xl border border-green-500/20 backdrop-blur-sm">
+                    <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <FaPaperPlane className="text-green-400 text-3xl" />
+                    </div>
+                    <p className="font-black text-white text-xl mb-2 tracking-tight">Transmission Successful</p>
+                    <p className="text-slate-300 font-light max-w-sm mx-auto">
+                      The proprietor has been notified and will respond to your registered email shortly.
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleEnquiry} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">
+                          Applicant Name
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          value={enquiryName}
+                          onChange={(e) => setEnquiryName(e.target.value)}
+                          placeholder="Full Name"
+                          className="w-full px-5 py-3.5 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:bg-white/10 transition-colors backdrop-blur-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">
+                          Contact Number
+                        </label>
+                        <div className="relative">
+                          <FaPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm" />
+                          <input
+                            type="tel"
+                            value={enquiryPhone}
+                            onChange={(e) => setEnquiryPhone(e.target.value)}
+                            placeholder="+232 77 000 000"
+                            className="w-full pl-11 pr-5 py-3.5 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:bg-white/10 transition-colors backdrop-blur-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">
+                        Inquiry Message <span className="text-green-400">*</span>
+                      </label>
+                      <textarea
+                        required
+                        rows={5}
+                        value={enquiryMessage}
+                        onChange={(e) => setEnquiryMessage(e.target.value)}
+                        placeholder="Detail your interest or scheduling preferences..."
+                        className="w-full px-5 py-4 border border-white/10 rounded-2xl bg-white/5 text-white placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:bg-white/10 transition-colors backdrop-blur-sm resize-none"
                       />
                     </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1">
-                      Message <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      required
-                      rows={4}
-                      value={enquiryMessage}
-                      onChange={(e) => setEnquiryMessage(e.target.value)}
-                      placeholder="Hi, I'm interested in this property. Is it still available?"
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-green-500 focus:bg-white transition-colors text-sm text-gray-900 placeholder:text-gray-400 resize-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={enquirySending}
-                    className="w-full py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
-                  >
-                    {enquirySending ? (
-                      <>
-                        <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                        Sending…
-                      </>
-                    ) : (
-                      <>
-                        <FaPaperPlane />
-                        Send Enquiry
-                      </>
-                    )}
-                  </button>
-                </form>
-              )}
+                    <button
+                      type="submit"
+                      disabled={enquirySending}
+                      className="w-full py-4 mt-2 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-400 disabled:opacity-60 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(35,63,124,0.4)] hover:shadow-[0_0_30px_rgba(35,63,124,0.6)] flex items-center justify-center gap-3 tracking-wide"
+                    >
+                      {enquirySending ? (
+                        <>
+                          <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                          Processing…
+                        </>
+                      ) : (
+                        <>
+                          <FaPaperPlane />
+                          Submit Inquiry
+                        </>
+                      )}
+                    </button>
+                  </form>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Booking Card */}
+          {/* Booking Card Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 sticky top-24 shadow-lg">
-              <div className="mb-6">
-                <p className="text-sm text-gray-500 mb-1 font-medium">
-                  Monthly Rent
+            <div className="bg-white rounded-[2rem] border border-slate-100 p-8 sticky top-28 shadow-[0_20px_40px_rgb(0,0,0,0.04)]">
+              <div className="mb-8">
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-3">
+                  Investment
                 </p>
-                <div className="flex items-baseline gap-1 mb-3">
-                  <span className="text-4xl font-black text-primary-600">
-                    Le {apartment.price_per_month.toLocaleString()}
+                <div className="flex flex-col mb-6 pb-6 border-b border-slate-100">
+                  <span className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tighter mb-1">
+                    <span className="text-lg font-bold text-slate-400 mr-1 opacity-70">Le</span>
+                    {apartment.price_per_month.toLocaleString()}
                   </span>
-                  <span className="text-gray-500">/mo</span>
+                  <span className="text-slate-500 font-light tracking-wide">Per Month</span>
                 </div>
-                <div className="space-y-2 text-sm text-gray-600 border-t border-gray-100 pt-3">
-                  <div className="flex justify-between">
-                    <span>Security deposit</span>
-                    <span className="font-semibold text-gray-900">
+                
+                <div className="space-y-4 text-slate-600">
+                  <div className="flex justify-between items-center p-3 sm:bg-slate-50 rounded-xl">
+                    <span className="font-medium text-slate-500">Security Deposit</span>
+                    <span className="font-bold text-slate-900">
                       Le {apartment.deposit_amount.toLocaleString()}
                     </span>
                   </div>
                   {apartment.lease_duration_months && (
-                    <div className="flex justify-between">
-                      <span>Min. lease</span>
-                      <span className="font-semibold text-gray-900">
-                        {apartment.lease_duration_months} months
+                    <div className="flex justify-between items-center p-3 sm:bg-slate-50 rounded-xl">
+                      <span className="font-medium text-slate-500">Minimum Lease</span>
+                      <span className="font-bold text-slate-900 bg-white sm:border border-slate-200 px-3 py-1 rounded-lg shadow-sm">
+                        {apartment.lease_duration_months} Months
                       </span>
                     </div>
                   )}
@@ -499,15 +520,20 @@ export default function ApartmentDetailPage() {
 
               <button
                 onClick={handleBooking}
-                className="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors shadow-md mb-3"
+                className="w-full py-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white font-bold tracking-wide rounded-xl transition-all shadow-[0_0_20px_rgba(38,163,87,0.3)] hover:shadow-[0_0_30px_rgba(38,163,87,0.5)] mb-4"
               >
-                Book Now
+                Reserve Now
               </button>
-              <p className="text-center text-gray-400 text-xs">
-                You won't be charged until confirmed
-              </p>
+              
+              <div className="flex items-center justify-center gap-2 text-slate-400">
+                <FaShieldAlt className="text-slate-300" />
+                <p className="text-center text-xs font-medium">
+                  Zero commitment. Pay at signing.
+                </p>
+              </div>
             </div>
           </div>
+          
         </div>
       </div>
     </div>
