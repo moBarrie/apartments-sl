@@ -144,11 +144,11 @@ CREATE TABLE messages (
   sender_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   recipient_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   apartment_id UUID REFERENCES apartments(id) ON DELETE SET NULL,
-  subject TEXT,
-  body TEXT NOT NULL,
+  content TEXT NOT NULL,
   read_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
 
 -- Blocked dates
 CREATE TABLE blocked_dates (
