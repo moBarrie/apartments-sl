@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import { usePathname } from "next/navigation";
