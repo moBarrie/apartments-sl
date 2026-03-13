@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={outfit.className} suppressHydrationWarning>
         <AuthProvider>
           <Navbar />
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-screen pt-20">{children}</main>
           <Footer />
           <Toaster position="top-right" />
         </AuthProvider>

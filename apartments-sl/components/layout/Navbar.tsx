@@ -29,13 +29,13 @@ export default function Navbar() {
   }, []);
 
   const navLinkClass =
-    "inline-flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors px-4 py-2 rounded-xl hover:bg-white/5";
+    "inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors px-4 py-2 rounded-xl hover:bg-slate-100/80";
     
   const ghostButtonClass =
-    "inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white border border-white/5 bg-white/5 hover:bg-white/10 transition-all backdrop-blur-md";
+    "inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:text-slate-900 border border-slate-200 bg-slate-50/50 hover:bg-slate-100 transition-all";
     
   const primaryButtonClass =
-    "inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 shadow-[0_0_20px_rgba(5,150,105,0.3)] hover:shadow-[0_0_30px_rgba(5,150,105,0.5)] transition-all";
+    "inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 shadow-[0_10px_20px_rgba(5,150,105,0.15)] hover:shadow-[0_15px_30px_rgba(5,150,105,0.25)] transition-all";
 
   // Don't show Navbar on auth pages
   const isAuthPage = pathname === "/login" || pathname === "/signup";
@@ -44,20 +44,20 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b ${
         scrolled
-          ? "bg-slate-950/80 backdrop-blur-2xl shadow-2xl border-b border-white/5 py-3"
-          : "bg-transparent py-5"
+          ? "bg-white/90 backdrop-blur-xl shadow-lg border-slate-200/60 py-2.5"
+          : "bg-white/50 backdrop-blur-md border-transparent py-4"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
-          <Logo variant="light" />
+          <Logo variant="dark" />
 
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-4">
-            <div className="flex items-center p-1.5 rounded-full border border-white/10 glass-dark shadow-inner">
+            <div className="flex items-center p-1.5 rounded-full border border-slate-200 bg-slate-50 shadow-inner">
               <Link href="/apartments" className={navLinkClass}>
                 <FaSearch className="w-3.5 h-3.5" />
                 <span>Search</span>
@@ -79,9 +79,9 @@ export default function Navbar() {
             </div>
 
             {user && profile ? (
-              <div className="flex items-center gap-4 ml-4 pl-4 border-l border-white/10">
+              <div className="flex items-center gap-4 ml-4 pl-4 border-l border-slate-200">
                 <Link href="/profile" className={ghostButtonClass}>
-                  <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
+                  <div className="w-6 h-6 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
                     <FaUser className="w-3 h-3 text-white" />
                   </div>
                   <span className="max-w-[120px] truncate">
@@ -91,13 +91,13 @@ export default function Navbar() {
 
                 <button
                   onClick={signOut}
-                  className="inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-medium text-red-400 border border-red-500/20 bg-red-500/10 hover:bg-red-500/20 hover:text-red-300 transition-colors"
+                  className="inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-bold text-red-600 border border-red-200 bg-red-50 hover:bg-red-100 transition-colors"
                 >
                   Logout
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-white/10">
+              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-slate-200">
                 <Link href="/login" className={ghostButtonClass}>
                   Sign In
                 </Link>
@@ -110,7 +110,7 @@ export default function Navbar() {
 
           {/* Mobile Toggle */}
           <button
-            className={`lg:hidden p-3 rounded-full hover:bg-white/10 transition-colors ${scrolled ? 'text-white' : 'text-white'}`}
+            className={`lg:hidden p-3 rounded-full hover:bg-slate-100 transition-colors text-slate-900`}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle navigation menu"
           >
@@ -124,14 +124,14 @@ export default function Navbar() {
 
         {/* Mobile Nav */}
         {isOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 mt-2 mx-4 rounded-3xl border border-white/10 bg-slate-950/95 backdrop-blur-3xl shadow-2xl p-6 animate-fade-in-up">
+          <div className="lg:hidden absolute top-full left-0 right-0 mt-2 mx-4 rounded-3xl border border-slate-200 bg-white/95 backdrop-blur-3xl shadow-2xl p-6 animate-fade-in-up">
             <div className="flex flex-col gap-4">
               <Link
                 href="/apartments"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-all"
+                className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 font-bold transition-all border border-slate-100"
               >
-                <FaSearch className="w-4 h-4 text-green-400" />
+                <FaSearch className="w-4 h-4 text-emerald-500" />
                 <span>Search Properties</span>
               </Link>
 
@@ -144,17 +144,17 @@ export default function Navbar() {
                         : "/dashboard/renter"
                     }
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-all"
+                    className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 font-bold transition-all border border-slate-100"
                   >
-                    <FaBuilding className="w-4 h-4 text-green-400" />
+                    <FaBuilding className="w-4 h-4 text-emerald-500" />
                     <span>Dashboard</span>
                   </Link>
                   <Link
                     href="/profile"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-all"
+                    className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 font-bold transition-all border border-slate-100"
                   >
-                    <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md">
+                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-md">
                       <FaUser className="w-3 h-3 text-white" />
                     </div>
                     <span>{profile.full_name}</span>
@@ -164,7 +164,7 @@ export default function Navbar() {
                       signOut();
                       setIsOpen(false);
                     }}
-                    className="flex items-center gap-3 px-5 py-3.5 rounded-xl border border-red-500/20 bg-red-500/10 text-red-400 font-medium transition-all"
+                    className="flex items-center justify-center gap-3 px-5 py-3.5 rounded-xl border border-red-200 bg-red-50 text-red-600 font-bold transition-all"
                   >
                     <span>Sign Out</span>
                   </button>
@@ -174,14 +174,14 @@ export default function Navbar() {
                   <Link
                     href="/login"
                     onClick={() => setIsOpen(false)}
-                    className="px-5 py-3 rounded-xl border border-white/10 bg-white/5 text-white font-medium text-center hover:bg-white/10 transition-colors"
+                    className="px-5 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 font-bold text-center hover:bg-slate-100 transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/signup"
                     onClick={() => setIsOpen(false)}
-                    className="px-5 py-3 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl text-center shadow-lg transition-all"
+                    className="px-5 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-bold rounded-xl text-center shadow-lg transition-all"
                   >
                     Sign Up
                   </Link>
