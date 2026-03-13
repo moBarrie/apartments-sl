@@ -11,6 +11,8 @@ import {
   FaUser,
   FaBuilding,
   FaCheckCircle,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
 
 export default function SignUpPage() {
@@ -21,6 +23,9 @@ export default function SignUpPage() {
   const [role, setRole] = useState<"RENTER" | "LANDLORD">("RENTER");
   const [loading, setLoading] = useState(false);
   const [emailConfirmPending, setEmailConfirmPending] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const router = useRouter();
   const signUp = useAuthStore((state) => state.signUp);
@@ -80,7 +85,7 @@ export default function SignUpPage() {
   }
 
   const inputCls =
-    "w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
+    "w-full pl-11 pr-12 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
 
   const FlagLogo = () => (
     <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
@@ -211,13 +216,20 @@ export default function SignUpPage() {
               <div className="relative">
                 <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className={inputCls}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
               </div>
             </div>
             <div>
@@ -227,15 +239,23 @@ export default function SignUpPage() {
               <div className="relative">
                 <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
                   className={inputCls}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
               </div>
             </div>
+
             <button
               type="submit"
               disabled={loading}
