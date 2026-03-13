@@ -159,19 +159,29 @@ export const useAuthStore = create<AuthState>()(
               { onConflict: "id" },
             );
 
-            if (role === "LANDLORD") {
-              await supabase
-                .from("landlord_profiles")
-                .upsert({ user_id: data.user.id }, { onConflict: "user_id" });
+            try {
+              if (role === "LANDLORD") {
+                await supabase
+                  .from("landlord_profiles")
+                  .upsert({ user_id: data.user.id }, { onConflict: "user_id" });
+              }
+            } catch (listerErr) {
+              console.error("Lister profile creation failed:", listerErr);
+              // We don't throw here to allow the main user creation to succeed
             }
 
-            const { data: finalProfile } = await supabase
+            const { data: finalProfile, error: finalError } = await supabase
               .from("users")
               .select("id, email, full_name, role")
               .eq("id", data.user.id)
               .single();
+
+            if (finalError) {
+              throw new Error(`Profile creation verified but fetch failed: ${finalError.message}`);
+            }
             profile = finalProfile;
           }
+
 
           set({ user: data.user, profile: profile as any, isLoading: false });
 

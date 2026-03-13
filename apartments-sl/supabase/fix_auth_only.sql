@@ -84,16 +84,21 @@ BEGIN
     role = EXCLUDED.role;
 
   -- Re-handle landlord profile if needed
-  IF (NEW.raw_user_meta_data->>'role' = 'LANDLORD') THEN
-    INSERT INTO public.landlord_profiles (user_id)
-    VALUES (NEW.id)
-    ON CONFLICT (user_id) DO NOTHING;
+  IF (UPPER(NEW.raw_user_meta_data->>'role') = 'LANDLORD') THEN
+    BEGIN
+      INSERT INTO public.landlord_profiles (user_id)
+      VALUES (NEW.id)
+      ON CONFLICT (user_id) DO NOTHING;
+    EXCEPTION WHEN OTHERS THEN
+      -- Silently fail for landlord profile to ensure user creation succeeds
+      RAISE NOTICE 'Failed to create landlord profile for user %', NEW.id;
+    END;
   END IF;
-
 
   RETURN NEW;
 END;
 $$;
+
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
