@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/common/Logo";
+import { useAuthStore } from "@/store/authStore";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
