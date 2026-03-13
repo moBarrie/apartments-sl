@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { toast } from "react-hot-toast";
-import { FaEnvelope, FaLock, FaBuilding, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import Logo from "@/components/common/Logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -37,50 +38,37 @@ export default function LoginPage() {
   const inputCls =
     "w-full pl-11 pr-12 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
 
-  const FlagLogo = () => (
-    <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
-      <div className="absolute top-0 left-0 right-0 h-[33.33%] bg-green-600" />
-      <div className="absolute top-[33.33%] left-0 right-0 h-[33.33%] bg-white" />
-      <div className="absolute bottom-0 left-0 right-0 h-[33.33%] bg-primary-600" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <FaBuilding className="text-gray-900 text-sm" />
-      </div>
-    </div>
-  );
-
   return (
     <div className="min-h-screen flex">
       {/* Left – branding panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 flex-col justify-between p-14">
-        <Link href="/" className="flex items-center gap-3">
-          <FlagLogo />
-          <span className="text-white text-xl font-bold">
-            Apartments<span className="text-green-400">.SL</span>
-          </span>
-        </Link>
+      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 flex-col justify-between p-14 relative overflow-hidden">
+        {/* Decorative background elements for trust */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -mr-32 -mt-32" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -ml-32 -mb-32" />
+
+        <Logo variant="light" />
+
         <div>
           <h2 className="text-5xl font-black text-white leading-tight mb-6">
-            Find Your <span className="text-green-400">Home</span> in Sierra
+            Find Your <span className="text-emerald-400">Home</span> in Sierra
             Leone
           </h2>
-          <p className="text-gray-400 text-lg leading-relaxed">
-            Join thousands of renters finding quality homes across Freetown, Bo,
+          <p className="text-slate-400 text-lg leading-relaxed max-w-md">
+            Join thousands of renters finding quality, verified homes across Freetown, Bo,
             Kenema &amp; Makeni.
           </p>
         </div>
-        <p className="text-gray-600 text-sm">© 2026 Apartments.SL</p>
+        <p className="text-slate-600 text-sm z-10">© 2026 Apartments.SL — Elite Real Estate</p>
       </div>
 
       {/* Right – form */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white relative">
         <div className="w-full max-w-md">
-          {/* Mobile logo */}
-          <Link href="/" className="flex items-center gap-2 mb-8 lg:hidden">
-            <FlagLogo />
-            <span className="font-bold text-gray-900">
-              Apartments<span className="text-green-600">.SL</span>
-            </span>
-          </Link>
+          {/* Mobile logo only shown on small screens */}
+          <div className="lg:hidden mb-12">
+            <Logo variant="dark" />
+          </div>
+
 
           <h1 className="text-3xl font-black text-gray-900 mb-2">
             Welcome back
@@ -89,7 +77,7 @@ export default function LoginPage() {
             Don&apos;t have an account?{" "}
             <Link
               href="/signup"
-              className="text-green-600 font-semibold hover:underline"
+              className="text-emerald-600 font-semibold hover:underline"
             >
               Sign up
             </Link>
@@ -120,7 +108,7 @@ export default function LoginPage() {
                 </label>
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-primary-600 hover:underline"
+                  className="text-sm text-emerald-600 hover:underline"
                 >
                   Forgot password?
                 </Link>
@@ -149,7 +137,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Signing in…" : "Sign in"}
             </button>

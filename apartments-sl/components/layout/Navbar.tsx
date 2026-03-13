@@ -10,22 +10,18 @@ import {
   FaSearch,
   FaArrowRight,
 } from "react-icons/fa";
-import { useAuthStore } from "@/store/authStore";
-
-// Premium Logo
-function PremiumLogo() {
-  return (
-    <div className="relative w-12 h-12 rounded-2xl overflow-hidden shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center border border-white/10">
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-green-500/20 to-transparent"></div>
-      <FaBuilding className="w-5 h-5 text-green-400 drop-shadow-md z-10" />
-    </div>
-  );
-}
+import { usePathname } from "next/navigation";
+import Logo from "@/components/common/Logo";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { profile, user, signOut } = useAuthStore();
+  const pathname = usePathname();
+
+  // Don't show Navbar on auth pages
+  const isAuthPage = pathname === "/login" || pathname === "/signup";
+  if (isAuthPage) return null;
 
   const navLinkClass =
     "inline-flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors px-4 py-2 rounded-xl hover:bg-white/5";
@@ -34,7 +30,7 @@ export default function Navbar() {
     "inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white border border-white/5 bg-white/5 hover:bg-white/10 transition-all backdrop-blur-md";
     
   const primaryButtonClass =
-    "inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 shadow-[0_0_20px_rgba(38,163,87,0.3)] hover:shadow-[0_0_30px_rgba(38,163,87,0.5)] transition-all";
+    "inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 shadow-[0_0_20px_rgba(5,150,105,0.3)] hover:shadow-[0_0_30px_rgba(5,150,105,0.5)] transition-all";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,17 +50,8 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
-          <Link href="/" className="flex items-center gap-4 group">
-            <PremiumLogo />
-            <div className="flex flex-col">
-              <span className={`text-2xl font-black leading-tight tracking-tight ${scrolled ? 'text-white' : 'text-white'}`}>
-                Apartments<span className="text-green-500">.SL</span>
-              </span>
-              <span className={`text-[9px] font-bold tracking-[0.2em] uppercase ${scrolled ? 'text-slate-400' : 'text-slate-300'}`}>
-                Premium Real Estate
-              </span>
-            </div>
-          </Link>
+          <Logo variant="light" />
+
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-4">

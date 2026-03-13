@@ -15,6 +15,8 @@ import {
   FaEyeSlash,
 } from "react-icons/fa";
 
+import Logo from "@/components/common/Logo";
+
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,7 +65,7 @@ export default function SignUpPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
         <div className="bg-white rounded-2xl border border-gray-100 p-10 max-w-md w-full text-center shadow-sm">
-          <FaCheckCircle className="text-green-500 text-5xl mx-auto mb-5" />
+          <FaCheckCircle className="text-emerald-500 text-5xl mx-auto mb-5" />
           <h1 className="text-2xl font-black text-gray-900 mb-3">
             Check your email
           </h1>
@@ -75,7 +77,7 @@ export default function SignUpPage() {
           </p>
           <Link
             href="/login"
-            className="block w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors"
+            className="block w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-colors"
           >
             Go to Sign In
           </Link>
@@ -85,65 +87,51 @@ export default function SignUpPage() {
   }
 
   const inputCls =
-    "w-full pl-11 pr-12 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
-
-  const FlagLogo = () => (
-    <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
-      <div className="absolute top-0 left-0 right-0 h-[33.33%] bg-green-600" />
-      <div className="absolute top-[33.33%] left-0 right-0 h-[33.33%] bg-white" />
-      <div className="absolute bottom-0 left-0 right-0 h-[33.33%] bg-primary-600" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <FaBuilding className="text-gray-900 text-sm" />
-      </div>
-    </div>
-  );
+    "w-full pl-11 pr-12 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
 
   return (
     <div className="min-h-screen flex">
       {/* Left panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 flex-col justify-between p-14">
-        <Link href="/" className="flex items-center gap-3">
-          <FlagLogo />
-          <span className="text-white text-xl font-bold">
-            Apartments<span className="text-green-400">.SL</span>
-          </span>
-        </Link>
+      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 flex-col justify-between p-14 relative overflow-hidden">
+        {/* Decorative background elements for trust */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px] -mr-40 -mt-40" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px] -ml-40 -mb-40" />
+
+        <Logo variant="light" />
+
         <div>
           <h2 className="text-5xl font-black text-white leading-tight mb-6">
-            List, Rent &amp; <span className="text-green-400">Grow</span> in
+            List, Rent &amp; <span className="text-emerald-400">Grow</span> in
             Sierra Leone
           </h2>
-          <p className="text-gray-400 text-lg leading-relaxed mb-8">
-            Create your free account and start finding or listing apartments in
-            minutes.
+          <p className="text-slate-400 text-lg leading-relaxed mb-8 max-w-md">
+            Create your free account and start finding or listing apartments in minutes. Join the elite community.
           </p>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 relative z-10">
             {[
-              { n: "1,000+", l: "Active Listings" },
-              { n: "500+", l: "Happy Renters" },
-              { n: "4", l: "Cities" },
-              { n: "Free", l: "To Sign Up" },
+              { n: "1,000+", l: "Properties" },
+              { n: "500+", l: "Active Users" },
+              { n: "Verified", l: "Listings" },
+              { n: "Premium", l: "Support" },
             ].map(({ n, l }) => (
-              <div key={l} className="bg-gray-800 rounded-xl p-4">
-                <p className="text-2xl font-black text-green-400">{n}</p>
-                <p className="text-gray-400 text-sm">{l}</p>
+              <div key={l} className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/5">
+                <p className="text-2xl font-black text-emerald-400">{n}</p>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">{l}</p>
               </div>
             ))}
           </div>
         </div>
-        <p className="text-gray-600 text-sm">© 2026 Apartments.SL</p>
+        <p className="text-slate-600 text-sm z-10">© 2026 Apartments.SL — Elite Real Estate</p>
       </div>
 
       {/* Right – form */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white overflow-y-auto">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white overflow-y-auto relative">
         <div className="w-full max-w-md">
-          {/* Mobile logo */}
-          <Link href="/" className="flex items-center gap-2 mb-8 lg:hidden">
-            <FlagLogo />
-            <span className="font-bold text-gray-900">
-              Apartments<span className="text-green-600">.SL</span>
-            </span>
-          </Link>
+          {/* Mobile logo only shown on small screens */}
+          <div className="lg:hidden mb-12">
+            <Logo variant="dark" />
+          </div>
+
 
           <h1 className="text-3xl font-black text-gray-900 mb-2">
             Create your account
@@ -152,7 +140,7 @@ export default function SignUpPage() {
             Already have an account?{" "}
             <Link
               href="/login"
-              className="text-green-600 font-semibold hover:underline"
+              className="text-emerald-600 font-semibold hover:underline"
             >
               Sign in
             </Link>
@@ -259,7 +247,7 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Creating account…" : "Create account"}
             </button>

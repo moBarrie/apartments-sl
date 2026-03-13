@@ -1,26 +1,23 @@
 import Link from "next/link";
-import { FaFacebook, FaTwitter, FaInstagram, FaBuilding } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+import { usePathname } from "next/navigation";
+import Logo from "@/components/common/Logo";
 
 export default function Footer() {
+  const pathname = usePathname();
+  
+  // Don't show footer on auth pages
+  const isAuthPage = pathname === "/login" || pathname === "/signup";
+  if (isAuthPage) return null;
+
   return (
     <footer className="bg-gray-950 text-gray-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div>
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
-                <div className="absolute top-0 left-0 right-0 h-[33.33%] bg-green-600" />
-                <div className="absolute top-[33.33%] left-0 right-0 h-[33.33%] bg-white" />
-                <div className="absolute bottom-0 left-0 right-0 h-[33.33%] bg-primary-600" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <FaBuilding className="w-5 h-5 text-gray-900" />
-                </div>
-              </div>
-              <span className="text-white font-bold text-lg">
-                Apartments<span className="text-green-500">.SL</span>
-              </span>
-            </Link>
+            <Logo variant="light" className="mb-4" />
+
             <p className="text-sm leading-relaxed mb-5">
               Sierra Leone's most trusted apartment rental marketplace.
             </p>
