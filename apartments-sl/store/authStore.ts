@@ -58,8 +58,6 @@ export const useAuthStore = create<AuthState>()(
             password,
           });
           if (error) {
-            // Supabase returns a generic error for unconfirmed emails;
-            // rewrite it to something actionable.
             if (
               error.message.toLowerCase().includes("email not confirmed") ||
               error.message.toLowerCase().includes("invalid login")
@@ -70,16 +68,40 @@ export const useAuthStore = create<AuthState>()(
             }
             throw error;
           }
-          const profile = await loadProfile(supabase, data.user.id);
+
+          let profile = await loadProfile(supabase, data.user.id);
+
+          // Self-healing: if the trigger didn't create the profile row, create it now
           if (!profile) {
-            // Auth succeeded but no profile row exists yet (e.g. trigger not
-            // installed).  Sign them out cleanly so they don't get stuck.
+            const meta = data.user.user_metadata ?? {};
+            const role: UserRole =
+              meta.role === "LANDLORD" ? "LANDLORD" : "RENTER";
+            const full_name: string =
+              meta.full_name ?? email.split("@")[0] ?? "User";
+
+            await supabase.from("users").upsert(
+              { id: data.user.id, email, full_name, role },
+              { onConflict: "id" },
+            );
+
+            if (role === "LANDLORD") {
+              await supabase
+                .from("landlord_profiles")
+                .upsert({ user_id: data.user.id }, { onConflict: "user_id" });
+            }
+
+            profile = await loadProfile(supabase, data.user.id);
+          }
+
+          if (!profile) {
+            // Still null — RLS is blocking the read. Sign out cleanly.
             await supabase.auth.signOut();
             set({ user: null, profile: null, isLoading: false });
             throw new Error(
-              "Account setup incomplete. Please sign up again or contact support.",
+              "Could not load your account. Please ensure the database migrations have been applied (see README), then try again.",
             );
           }
+
           set({ user: data.user, profile, isLoading: false });
         } catch (err) {
           set({ isLoading: false });
