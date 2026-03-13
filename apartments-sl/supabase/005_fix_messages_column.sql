@@ -46,3 +46,53 @@ BEGIN
   WHERE id = apartment_id;
 END;
 $$;
+
+-- Add is_primary column to apartment_images if missing.
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name   = 'apartment_images'
+      AND column_name  = 'is_primary'
+  ) THEN
+    ALTER TABLE public.apartment_images
+      ADD COLUMN is_primary BOOLEAN NOT NULL DEFAULT FALSE;
+    RAISE NOTICE 'Added apartment_images.is_primary';
+  ELSE
+    RAISE NOTICE 'apartment_images.is_primary already exists, skipping';
+  END IF;
+END $$;
+
+-- Re-install the auth trigger in case it was never applied.
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.users (id, email, full_name, role)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', 'User'),
+    COALESCE(NEW.raw_user_meta_data->>'role', 'RENTER')::user_role
+  )
+  ON CONFLICT (id) DO NOTHING;
+
+  IF (NEW.raw_user_meta_data->>'role' = 'LANDLORD') THEN
+    INSERT INTO public.landlord_profiles (user_id)
+    VALUES (NEW.id)
+    ON CONFLICT (user_id) DO NOTHING;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
