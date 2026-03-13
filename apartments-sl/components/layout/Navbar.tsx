@@ -20,9 +20,13 @@ export default function Navbar() {
   const { profile, user, signOut } = useAuthStore();
   const pathname = usePathname();
 
-  // Don't show Navbar on auth pages
-  const isAuthPage = pathname === "/login" || pathname === "/signup";
-  if (isAuthPage) return null;
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinkClass =
     "inline-flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors px-4 py-2 rounded-xl hover:bg-white/5";
@@ -33,13 +37,10 @@ export default function Navbar() {
   const primaryButtonClass =
     "inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 shadow-[0_0_20px_rgba(5,150,105,0.3)] hover:shadow-[0_0_30px_rgba(5,150,105,0.5)] transition-all";
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Don't show Navbar on auth pages
+  const isAuthPage = pathname === "/login" || pathname === "/signup";
+  if (isAuthPage) return null;
+
 
   return (
     <nav
