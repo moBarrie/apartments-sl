@@ -145,7 +145,7 @@ export default function NewPropertyPage() {
 
   const labelCls = "block text-sm font-semibold text-gray-700 mb-1.5";
   const inputCls =
-    "w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-green-500 focus:bg-white transition-colors text-gray-900 placeholder:text-gray-400";
+    "w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors text-gray-900 placeholder:text-gray-400";
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -420,7 +420,7 @@ export default function NewPropertyPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="px-8 py-3 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white font-bold rounded-xl transition-colors shadow-md flex items-center gap-2"
+            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-bold rounded-xl transition-colors shadow-md flex items-center gap-2"
           >
             {submitting ? (
               <>

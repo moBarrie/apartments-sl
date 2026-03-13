@@ -135,7 +135,7 @@ function ApartmentsContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="text-green-600 font-bold text-xs uppercase tracking-[0.2em] mb-3">
+              <p className="text-emerald-600 font-bold text-xs uppercase tracking-[0.2em] mb-3">
                 Property Portfolio
               </p>
               <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-2">
@@ -165,7 +165,7 @@ function ApartmentsContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
          {/* Background Decoration */}
-         <div className="absolute top-20 right-10 w-[400px] h-[400px] bg-green-500/5 rounded-full blur-[100px] pointer-events-none" />
+         <div className="absolute top-20 right-10 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
 
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -243,12 +243,12 @@ function ApartmentsContent() {
 
                 <div className="p-8 flex flex-col flex-1 bg-white">
                   <Link href={`/apartments/${apartment.id}`}>
-                    <h3 className="font-bold text-slate-900 text-xl mb-2 line-clamp-1 group-hover:text-green-600 transition-colors tracking-tight">
+                    <h3 className="font-bold text-slate-900 text-xl mb-2 line-clamp-1 group-hover:text-emerald-600 transition-colors tracking-tight">
                       {apartment.title}
                     </h3>
                   </Link>
                   <p className="text-slate-500 text-sm flex items-center gap-2 mb-6 font-light">
-                    <FaMapMarkerAlt className="text-green-500 flex-shrink-0" />
+                    <FaMapMarkerAlt className="text-emerald-500 flex-shrink-0" />
                     {apartment.city}, Sierra Leone
                   </p>
                   
@@ -282,7 +282,7 @@ function ApartmentsContent() {
                     </div>
                     <Link
                       href={`/apartments/${apartment.id}`}
-                      className="text-sm font-bold text-white bg-slate-900 px-5 py-2.5 rounded-xl hover:bg-green-600 transition-colors shadow-md hover:shadow-lg"
+                      className="text-sm font-bold text-white bg-slate-900 px-5 py-2.5 rounded-xl hover:bg-emerald-600 transition-colors shadow-md hover:shadow-lg"
                     >
                       Details
                     </Link>
@@ -302,7 +302,7 @@ export default function ApartmentsPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-slate-50 pt-32 pb-20 flex items-center justify-center">
-          <div className="w-12 h-12 border-4 border-green-500/20 border-t-green-500 rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin" />
         </div>
       }
     >

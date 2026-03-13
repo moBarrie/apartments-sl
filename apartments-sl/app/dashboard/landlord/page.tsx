@@ -182,7 +182,7 @@ export default function LandlordDashboard() {
           </div>
           <Link
             href="/dashboard/landlord/properties/new"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors"
           >
             <FaPlus />
             Add Property
@@ -198,15 +198,15 @@ export default function LandlordDashboard() {
               label: "Properties",
               value: stats.totalProperties,
               Icon: FaHome,
-              bg: "bg-primary-50",
-              color: "text-primary-600",
+              bg: "bg-emerald-50",
+              color: "text-emerald-600",
             },
             {
               label: "Active Bookings",
               value: stats.activeBookings,
               Icon: FaCalendarCheck,
-              bg: "bg-green-50",
-              color: "text-green-600",
+              bg: "bg-emerald-50",
+              color: "text-emerald-600",
             },
             {
               label: "Revenue (Le)",
@@ -316,7 +316,7 @@ export default function LandlordDashboard() {
                       </span>
                     </div>
 
-                    <p className="text-lg font-black text-primary-600 mb-4">
+                    <p className="text-lg font-black text-emerald-600 mb-4">
                       Le {apartment.price_per_month.toLocaleString()}
                       <span className="text-gray-500 font-normal text-sm">
                         /mo
@@ -326,7 +326,7 @@ export default function LandlordDashboard() {
                     <div className="flex gap-2">
                       <Link
                         href={`/dashboard/landlord/properties/${apartment.id}/edit`}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-sm font-semibold transition-colors"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold transition-colors"
                       >
                         <FaEdit />
                         Edit

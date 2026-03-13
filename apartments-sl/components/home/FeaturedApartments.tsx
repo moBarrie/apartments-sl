@@ -113,24 +113,24 @@ export default function FeaturedApartments() {
 
           {/* Details */}
           <div className="p-8 relative bg-white">
-            <h3 className="font-bold text-slate-900 text-xl mb-2 line-clamp-1 group-hover:text-green-600 transition-colors tracking-tight">
+            <h3 className="font-bold text-slate-900 text-xl mb-2 line-clamp-1 group-hover:text-emerald-600 transition-colors tracking-tight">
               {apartment.title}
             </h3>
             
             <p className="text-slate-500 text-sm flex items-center gap-2 mb-6 font-light">
-              <FaMapMarkerAlt className="text-green-500 flex-shrink-0" />
+              <FaMapMarkerAlt className="text-emerald-500 flex-shrink-0" />
               {apartment.city}, Sierra Leone
             </p>
             
             <div className="flex items-center gap-6 text-sm text-slate-600 mb-6 pb-6 border-b border-slate-100/80">
               <span className="flex items-center gap-2 font-medium">
-                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-primary-500 group-hover:bg-primary-50 transition-colors">
+                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-emerald-500 group-hover:bg-emerald-50 transition-colors">
                   <FaBed className="w-3.5 h-3.5" />
                 </div>
                 {apartment.bedrooms} <span className="text-slate-400 font-light">Beds</span>
               </span>
               <span className="flex items-center gap-2 font-medium">
-                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-primary-500 group-hover:bg-primary-50 transition-colors">
+                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-emerald-500 group-hover:bg-emerald-50 transition-colors">
                   <FaBath className="w-3.5 h-3.5" />
                 </div>
                 {apartment.bathrooms} <span className="text-slate-400 font-light">Baths</span>
@@ -146,7 +146,7 @@ export default function FeaturedApartments() {
                 <span className="text-slate-400 text-sm font-light"> /mo</span>
               </div>
               
-              <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 group-hover:bg-green-600 group-hover:text-white group-hover:border-green-600 transition-all duration-300 transform group-hover:translate-x-1">
+              <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 transition-all duration-300 transform group-hover:translate-x-1">
                 <FaArrowRight className="w-3.5 h-3.5" />
               </div>
             </div>

@@ -19,15 +19,15 @@ export default function Home() {
       {/* How it works */}
       <section className="py-32 relative overflow-hidden">
         {/* Background Decorative Blob */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-500/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <p className="text-green-600 font-bold text-xs uppercase tracking-[0.2em] mb-4">
+            <p className="text-emerald-600 font-bold text-xs uppercase tracking-[0.2em] mb-4">
               Streamlined Process
             </p>
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
-              Secure Your Home in <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-primary-600">3 Steps</span>
+              Secure Your Home in <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-400">3 Steps</span>
             </h2>
           </div>
           
@@ -53,10 +53,10 @@ export default function Home() {
               },
             ].map(({ step, title, desc, icon }) => (
               <div key={step} className="group text-center flex flex-col items-center">
-                <div className="w-20 h-20 bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl flex items-center justify-center mb-8 text-3xl group-hover:scale-110 group-hover:shadow-[0_8px_30px_rgb(38,163,87,0.15)] transition-all duration-500">
+                <div className="w-20 h-20 bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl flex items-center justify-center mb-8 text-3xl group-hover:scale-110 group-hover:shadow-[0_8px_30px_rgb(16,185,129,0.15)] transition-all duration-500">
                   {icon}
                 </div>
-                <p className="text-7xl font-black text-slate-100 mb-2 group-hover:text-green-50 transition-colors duration-500 tracking-tighter">{step}</p>
+                <p className="text-7xl font-black text-slate-100 mb-2 group-hover:text-emerald-50 transition-colors duration-500 tracking-tighter">{step}</p>
                 <h3 className="text-2xl font-bold text-slate-900 mb-4 tracking-tight">
                   {title}
                 </h3>
@@ -72,7 +72,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
             <div>
-              <p className="text-primary-600 font-bold text-xs uppercase tracking-[0.2em] mb-4">
+              <p className="text-emerald-600 font-bold text-xs uppercase tracking-[0.2em] mb-4">
                 Curated Selection
               </p>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
@@ -99,7 +99,7 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <p className="text-green-600 font-bold text-xs uppercase tracking-[0.2em] mb-4">
+            <p className="text-emerald-600 font-bold text-xs uppercase tracking-[0.2em] mb-4">
               The Standard
             </p>
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">
@@ -116,17 +116,17 @@ export default function Home() {
                 icon: FaShieldAlt,
                 title: "Meticulously Verified",
                 desc: "Each property passes our rigorous 50-point inspection before it joins our exclusive collection.",
-                iconBg: "bg-green-50",
-                iconColor: "text-green-600",
-                borderColor: "group-hover:border-green-200"
+                iconBg: "bg-emerald-50",
+                iconColor: "text-emerald-600",
+                borderColor: "group-hover:border-emerald-200"
               },
               {
                 icon: FaBolt,
                 title: "Instant Residency",
                 desc: "Bypass traditional delays with our fully digitized, instant booking and contract system.",
-                iconBg: "bg-primary-50",
-                iconColor: "text-primary-600",
-                borderColor: "group-hover:border-primary-200"
+                iconBg: "bg-emerald-50",
+                iconColor: "text-emerald-600",
+                borderColor: "group-hover:border-emerald-200"
               },
               {
                 icon: FaHeadset,
@@ -140,17 +140,17 @@ export default function Home() {
                 icon: FaCheckCircle,
                 title: "Transparent Integrity",
                 desc: "Absolutely no hidden fees, unexpected charges, or convoluted contract terms. Ever.",
-                iconBg: "bg-primary-50",
-                iconColor: "text-primary-600",
-                borderColor: "group-hover:border-primary-200"
+                iconBg: "bg-emerald-50",
+                iconColor: "text-emerald-600",
+                borderColor: "group-hover:border-emerald-200"
               },
               {
                 icon: FaMapMarkerAlt,
                 title: "Prestigious Locations",
                 desc: "We solely feature properties in the most desirable and secure neighborhoods.",
-                iconBg: "bg-green-50",
-                iconColor: "text-green-600",
-                borderColor: "group-hover:border-green-200"
+                iconBg: "bg-emerald-50",
+                iconColor: "text-emerald-600",
+                borderColor: "group-hover:border-emerald-200"
               },
               {
                 icon: FaMobileAlt,
@@ -181,13 +181,13 @@ export default function Home() {
       {/* Modern CTA */}
       <section className="py-32 relative bg-slate-950 overflow-hidden">
         {/* Dynamic Abstract Background */}
-        <div className="absolute inset-0 opacity-20 Mix-blend-overlay">
-           <div className="absolute w-[800px] h-[800px] bg-green-500 rounded-full blur-[150px] -top-96 -right-40 animate-blob"></div>
-           <div className="absolute w-[800px] h-[800px] bg-primary-600 rounded-full blur-[150px] -bottom-96 -left-40 animate-blob animation-delay-4000"></div>
+        <div className="absolute inset-0 opacity-20 mix-blend-overlay">
+           <div className="absolute w-[800px] h-[800px] bg-emerald-500 rounded-full blur-[150px] -top-96 -right-40 animate-blob"></div>
+           <div className="absolute w-[800px] h-[800px] bg-emerald-700 rounded-full blur-[150px] -bottom-96 -left-40 animate-blob animation-delay-4000"></div>
         </div>
         
         <div className="relative max-w-4xl mx-auto px-4 text-center z-10">
-          <p className="text-green-400 font-bold text-xs uppercase tracking-[0.2em] mb-6">
+          <p className="text-emerald-400 font-bold text-xs uppercase tracking-[0.2em] mb-6">
             The Next Step
           </p>
           <h2 className="text-5xl md:text-6xl font-black text-white mb-8 tracking-tight">
@@ -199,7 +199,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-5 justify-center">
             <Link
               href="/apartments"
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white rounded-2xl font-bold tracking-wide transition-all shadow-[0_0_30px_rgba(38,163,87,0.3)] hover:shadow-[0_0_40px_rgba(38,163,87,0.5)] group"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-2xl font-bold tracking-wide transition-all shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_10px_40px_rgba(16,185,129,0.5)] group"
             >
               Browse Collection
               <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
