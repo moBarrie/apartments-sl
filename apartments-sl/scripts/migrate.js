@@ -35,7 +35,10 @@ async function runMigrations() {
       "supabase/002_rls_policies.sql",
       "supabase/003_seed_amenities.sql",
       "supabase/004_auth_trigger.sql",
+      "supabase/004_storage.sql",
+      "supabase/005_fix_messages_column.sql",
     ];
+
 
     for (const file of files) {
       console.log(`📄 Running ${file}...`);
