@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fdfdfd;
+  --foreground: #090e17;
 }
 
 @theme inline {
@@ -11,49 +11,50 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Sierra Leone flag blue (primary) */
-  --color-primary-50: #e6f7ff;
-  --color-primary-100: #bae7ff;
-  --color-primary-200: #91d5ff;
-  --color-primary-300: #69c0ff;
-  --color-primary-400: #40a9ff;
-  --color-primary-500: #1890ff;
-  --color-primary-600: #0072C6;
-  --color-primary-700: #005a9e;
-  --color-primary-800: #004477;
-  --color-primary-900: #002f4f;
+  /* Deep Luxury Sapphire Blue (Primary) */
+  --color-primary-50: #eff4fa;
+  --color-primary-100: #dce5f3;
+  --color-primary-200: #becdec;
+  --color-primary-300: #94afdf;
+  --color-primary-400: #628acd;
+  --color-primary-500: #3f68b8;
+  --color-primary-600: #2c4e97;
+  --color-primary-700: #233f7c;
+  --color-primary-800: #203666;
+  --color-primary-900: #1d2e55;
+  --color-primary-950: #121c35;
 
-  /* Sierra Leone flag green */
-  --color-green-50: #e8f9ed;
-  --color-green-100: #c6f0d2;
-  --color-green-200: #9fe6b5;
-  --color-green-300: #77dc97;
-  --color-green-400: #58d480;
-  --color-green-500: #38cc69;
-  --color-green-600: #1EB53A;
-  --color-green-700: #189d32;
-  --color-green-800: #138629;
-  --color-green-900: #0a6318;
+  /* Rich Emerald Green */
+  --color-green-50: #effbf3;
+  --color-green-100: #d9f5e1;
+  --color-green-200: #b5ebc8;
+  --color-green-300: #81daa2;
+  --color-green-400: #49c277;
+  --color-green-500: #26a357;
+  --color-green-600: #1a8244;
+  --color-green-700: #166737;
+  --color-green-800: #13522e;
+  --color-green-900: #104427;
+  --color-green-950: #082615;
 
-  /* ocean = alias for primary */
-  --color-ocean-50: #e6f7ff;
-  --color-ocean-100: #bae7ff;
-  --color-ocean-200: #91d5ff;
-  --color-ocean-300: #69c0ff;
-  --color-ocean-400: #40a9ff;
-  --color-ocean-500: #1890ff;
-  --color-ocean-600: #0072C6;
-  --color-ocean-700: #005a9e;
-  --color-ocean-800: #004477;
-  --color-ocean-900: #002f4f;
+  /* Ocean = Primary Alias */
+  --color-ocean-50: var(--color-primary-50);
+  --color-ocean-100: var(--color-primary-100);
+  --color-ocean-200: var(--color-primary-200);
+  --color-ocean-300: var(--color-primary-300);
+  --color-ocean-400: var(--color-primary-400);
+  --color-ocean-500: var(--color-primary-500);
+  --color-ocean-600: var(--color-primary-600);
+  --color-ocean-700: var(--color-primary-700);
+  --color-ocean-800: var(--color-primary-800);
+  --color-ocean-900: var(--color-primary-900);
 }
-
-/* Dark mode intentionally disabled — this is a light-mode app */
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom Animations */
@@ -65,13 +66,13 @@ body {
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+  50% { transform: translateY(-12px); }
 }
 
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(20px);
+    transform: translateX(30px);
   }
   to {
     opacity: 1;
@@ -79,10 +80,10 @@ body {
   }
 }
 
-@keyframes fadeInUp {
+@keyframes slideUpFade {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
@@ -90,20 +91,39 @@ body {
   }
 }
 
+@keyframes blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
 .animate-gradient {
-  animation: gradient 3s ease infinite;
+  animation: gradient 8s ease infinite;
+  background-size: 200% 200%;
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.5s ease-out;
+  animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
+  animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
 }
 
 /* Smooth scrolling */
@@ -111,10 +131,26 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Glass morphism effect */
+/* Luxury Glass Morphism */
 .glass {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+.glass-dark {
+  background: rgba(9, 14, 23, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Text Gradients */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-green-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
