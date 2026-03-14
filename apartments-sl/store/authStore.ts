@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
-type UserRole = "RENTER" | "LANDLORD";
+type UserRole = "RENTER" | "LANDLORD" | "ADMIN";
 
 interface UserProfile {
   id: string;

@@ -66,7 +66,9 @@ export default function Navbar() {
               {user && profile && (
                 <Link
                   href={
-                    profile.role === "LANDLORD"
+                    profile.role === "ADMIN"
+                      ? "/dashboard/admin"
+                      : profile.role === "LANDLORD"
                       ? "/dashboard/landlord"
                       : "/dashboard/renter"
                   }
@@ -139,7 +141,9 @@ export default function Navbar() {
                 <>
                   <Link
                     href={
-                      profile.role === "LANDLORD"
+                      profile.role === "ADMIN"
+                        ? "/dashboard/admin"
+                        : profile.role === "LANDLORD"
                         ? "/dashboard/landlord"
                         : "/dashboard/renter"
                     }

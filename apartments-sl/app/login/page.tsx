@@ -26,7 +26,11 @@ export default function LoginPage() {
       toast.success("Welcome back!");
       const role = useAuthStore.getState().profile?.role;
       router.push(
-        role === "LANDLORD" ? "/dashboard/landlord" : "/dashboard/renter",
+        role === "ADMIN"
+          ? "/dashboard/admin"
+          : role === "LANDLORD"
+          ? "/dashboard/landlord"
+          : "/dashboard/renter",
       );
     } catch (error: any) {
       toast.error(error.message || "Failed to sign in");
@@ -36,7 +40,7 @@ export default function LoginPage() {
   };
 
   const inputCls =
-    "w-full pl-11 pr-12 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
+    "w-full pl-11 pr-12 py-3.5 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium placeholder:text-slate-400 shadow-sm";
 
   return (
     <div className="min-h-screen flex">
@@ -137,9 +141,13 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50 active:scale-95 flex items-center justify-center"
             >
-              {loading ? "Signing in…" : "Sign in"}
+              {loading ? (
+                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                "Sign in to Dashboard"
+              )}
             </button>
           </form>
         </div>
