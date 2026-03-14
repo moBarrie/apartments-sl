@@ -16,6 +16,7 @@ import {
   FaFilter,
   FaBuilding,
   FaUser,
+  FaComments,
 } from "react-icons/fa";
 
 interface Apartment {
@@ -112,9 +113,19 @@ export default function AdminDashboard() {
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
-          <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Listing Review</h1>
-            <p className="text-slate-500 font-light">Audit and approve marketplace properties</p>
+          <div className="flex items-center gap-6">
+            <div>
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">Listing Review</h1>
+              <p className="text-slate-500 font-light">Audit and approve marketplace properties</p>
+            </div>
+            
+            <Link 
+              href="/dashboard/admin/messages"
+              className="px-6 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-600 text-xs font-bold hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm shadow-slate-100"
+            >
+              <FaComments className="text-emerald-500" />
+              Messaging Hub
+            </Link>
           </div>
 
           <div className="flex items-center gap-3 p-1.5 bg-white rounded-2xl border border-slate-200 shadow-sm">

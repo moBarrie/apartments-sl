@@ -39,8 +39,21 @@ type Conversation = {
 function MessagesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user } = useAuthStore();
+  const { user, profile, isLoading: authLoading } = useAuthStore();
   const supabase = createClient();
+
+  useEffect(() => {
+    if (authLoading) return;
+    
+    // Security check: Must be ADMIN and specific email
+    const isAuthorizedEmail = profile?.email === "medalbarrie@gmail.com";
+    
+    if (!user || profile?.role !== "ADMIN" || !isAuthorizedEmail) {
+      toast.error("Unauthorized access to messages");
+      router.push("/");
+      return;
+    }
+  }, [user, profile, authLoading, router]);
 
   const [loading, setLoading] = useState(true);
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -288,6 +301,7 @@ function MessagesContent() {
                           src={conv.apartment_image}
                           alt={conv.apartment_title}
                           fill
+                          unoptimized
                           className="object-cover"
                         />
                       ) : (
@@ -352,6 +366,7 @@ function MessagesContent() {
                             src={activeConv.apartment_image}
                             alt={activeConv.apartment_title}
                             fill
+                            unoptimized
                             className="object-cover"
                           />
                         ) : (
