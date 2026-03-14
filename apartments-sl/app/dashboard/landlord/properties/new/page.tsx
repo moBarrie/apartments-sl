@@ -7,7 +7,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { useAuthStore } from "@/store/authStore";
 import { toast } from "react-hot-toast";
-import { FaArrowLeft, FaPlus, FaTrash, FaUpload, FaHome } from "react-icons/fa";
+import { FaArrowLeft, FaPlus, FaTrash, FaUpload, FaHome, FaBuilding } from "react-icons/fa";
 
 const CITIES = ["Freetown", "Bo", "Kenema", "Makeni", "Koidu", "Lunsar"];
 
@@ -33,6 +33,8 @@ export default function NewPropertyPage() {
     deposit_amount: "",
     available_from: "",
     lease_duration_months: "",
+    property_type: "APARTMENT",
+    total_units: 1,
   });
 
   const set = (key: string, value: string | number) =>
@@ -113,6 +115,9 @@ export default function NewPropertyPage() {
           lease_duration_months: form.lease_duration_months
             ? Number(form.lease_duration_months)
             : null,
+          property_type: form.property_type,
+          total_units: Number(form.total_units),
+          is_entire_block: form.property_type === "APARTMENT_BLOCK",
           status: "PENDING",
         })
         .select("id")
@@ -143,27 +148,30 @@ export default function NewPropertyPage() {
     }
   };
 
-  const labelCls = "block text-sm font-semibold text-gray-700 mb-1.5";
+  const labelCls = "block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 ml-1";
   const inputCls =
-    "w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors text-gray-900 placeholder:text-gray-400";
+    "w-full px-5 py-3.5 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-slate-400 shadow-sm";
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50 pt-20 pb-20 relative overflow-hidden">
+      {/* Background ambient light */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-600/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-3xl mx-auto px-4 py-5 flex items-center gap-4">
+      <div className="bg-white border-b border-slate-100 mb-8">
+        <div className="max-w-4xl mx-auto px-4 py-8 flex items-center gap-6">
           <Link
             href="/dashboard/landlord"
-            className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-500 transition-colors"
+            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 transition-all shadow-sm group"
           >
-            <FaArrowLeft />
+            <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" />
           </Link>
           <div>
-            <h1 className="text-xl font-black text-gray-900">
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
               List a New Property
             </h1>
-            <p className="text-sm text-gray-500">
-              Fill in the details — we&apos;ll review and approve within 24 hrs
+            <p className="text-slate-500 font-light mt-1">
+              Add your residence to the elite collection — review in 24 hrs
             </p>
           </div>
         </div>
@@ -171,20 +179,23 @@ export default function NewPropertyPage() {
 
       <form
         onSubmit={handleSubmit}
-        className="max-w-3xl mx-auto px-4 py-8 space-y-8"
+        className="max-w-4xl mx-auto px-4 space-y-8 animate-fade-in-up"
       >
         {/* Images */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">
-            Photos{" "}
-            <span className="text-sm font-normal text-gray-400">(up to 8)</span>
-          </h2>
-
+        <div className="bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">
+              Property Gallery
+            </h2>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
+              {imageFiles.length} / 8 Images
+            </span>
+          </div>
           <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-3">
             {imagePreviews.map((src, idx) => (
               <div
                 key={idx}
-                className="relative aspect-square rounded-xl overflow-hidden bg-gray-100"
+                className="relative aspect-square rounded-xl overflow-hidden bg-slate-100"
               >
                 <Image
                   src={src}
@@ -211,10 +222,12 @@ export default function NewPropertyPage() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="aspect-square rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-1 hover:border-green-400 hover:bg-green-50 transition-colors text-gray-400 hover:text-green-600"
+                className="aspect-square rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center gap-2 hover:border-emerald-400 hover:bg-emerald-50 transition-all text-slate-400 hover:text-emerald-600 group"
               >
-                <FaUpload className="text-lg" />
-                <span className="text-xs font-medium">Add</span>
+                <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-emerald-100 transition-colors">
+                  <FaUpload className="text-lg" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Add Photos</span>
               </button>
             )}
           </div>
@@ -233,8 +246,8 @@ export default function NewPropertyPage() {
         </div>
 
         {/* Basic Info */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-5">
-          <h2 className="text-lg font-bold text-gray-900">Property Details</h2>
+        <div className="bg-white rounded-[2rem] border border-slate-100 p-8 space-y-6 shadow-sm">
+          <h2 className="text-xl font-black text-slate-900 tracking-tight mb-2">Essential Details</h2>
 
           <div>
             <label className={labelCls}>
@@ -282,6 +295,26 @@ export default function NewPropertyPage() {
 
             <div>
               <label className={labelCls}>
+                Property Type <span className="text-red-500">*</span>
+              </label>
+              <select
+                required
+                className={inputCls}
+                value={form.property_type}
+                onChange={(e) => set("property_type", e.target.value)}
+              >
+                <option value="APARTMENT">Apartment</option>
+                <option value="HOUSE">House</option>
+                <option value="STUDIO">Studio</option>
+                <option value="APARTMENT_BLOCK">Apartment Block (Entire Building)</option>
+                <option value="VILLA">Villa</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>
                 Address <span className="text-red-500">*</span>
               </label>
               <input
@@ -292,12 +325,31 @@ export default function NewPropertyPage() {
                 onChange={(e) => set("address", e.target.value)}
               />
             </div>
+
+            {form.property_type === "APARTMENT_BLOCK" && (
+              <div>
+                <label className={labelCls}>
+                  Total Units in Block <span className="text-emerald-500">*</span>
+                </label>
+                <div className="relative">
+                  <FaBuilding className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="number"
+                    min={1}
+                    required
+                    className={`${inputCls} pl-11`}
+                    value={form.total_units}
+                    onChange={(e) => set("total_units", e.target.value)}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Rooms & Size */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-5">
-          <h2 className="text-lg font-bold text-gray-900">Rooms &amp; Size</h2>
+        <div className="bg-white rounded-[2rem] border border-slate-100 p-8 space-y-6 shadow-sm">
+          <h2 className="text-xl font-black text-slate-900 tracking-tight mb-2">Volume &amp; Scale</h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <div>
@@ -346,9 +398,9 @@ export default function NewPropertyPage() {
         </div>
 
         {/* Pricing */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-5">
-          <h2 className="text-lg font-bold text-gray-900">
-            Pricing &amp; Availability
+        <div className="bg-white rounded-[2rem] border border-slate-100 p-8 space-y-6 shadow-sm">
+          <h2 className="text-xl font-black text-slate-900 tracking-tight mb-2">
+            Pricing &amp; Terms
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -410,27 +462,27 @@ export default function NewPropertyPage() {
         </div>
 
         {/* Submit */}
-        <div className="flex items-center justify-between gap-4 pb-8">
+        <div className="flex items-center justify-between gap-6 pb-12">
           <Link
             href="/dashboard/landlord"
-            className="px-6 py-3 rounded-xl border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-colors"
+            className="px-8 py-4 rounded-xl border border-slate-200 text-slate-500 font-bold hover:bg-slate-50 transition-all"
           >
             Cancel
           </Link>
           <button
             type="submit"
             disabled={submitting}
-            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-bold rounded-xl transition-colors shadow-md flex items-center gap-2"
+            className="px-12 py-4 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-black rounded-xl transition-all shadow-lg shadow-emerald-500/20 flex items-center gap-3 active:scale-95"
           >
             {submitting ? (
               <>
-                <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                Submitting…
+                <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                Processing…
               </>
             ) : (
               <>
-                <FaPlus />
-                Submit Property
+                <FaPlus className="text-sm" />
+                Publish Property
               </>
             )}
           </button>
