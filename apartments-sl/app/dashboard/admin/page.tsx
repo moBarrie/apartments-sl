@@ -149,7 +149,7 @@ export default function AdminDashboard() {
                 {/* Image Section */}
                 <div className="relative w-full lg:w-72 h-48 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0 shadow-inner">
                   {apt.apartment_images?.[0]?.url ? (
-                    <Image src={apt.apartment_images[0].url} alt={apt.title} fill className="object-cover" />
+                    <Image src={apt.apartment_images[0].url} alt={apt.title} fill unoptimized className="object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <FaHome className="text-slate-300 text-4xl" />

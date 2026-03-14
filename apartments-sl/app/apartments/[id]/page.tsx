@@ -40,7 +40,7 @@ interface Apartment {
   total_units: number;
   apartment_images: { url: string; caption: string | null }[];
   landlord_id: string;
-  users: {
+  landlord: {
     full_name: string;
     avatar_url: string | null;
   };
@@ -82,8 +82,8 @@ export default function ApartmentDetailPage() {
         .select(
           `
           *,
-          apartment_images(url, caption),
-          users!apartments_landlord_id_fkey(full_name, avatar_url)
+          apartment_images(url),
+          landlord:landlord_id(full_name, avatar_url)
         `,
         )
         .eq("id", params.id)
@@ -92,13 +92,17 @@ export default function ApartmentDetailPage() {
       if (error) throw error;
       setApartment(data);
 
-      // Increment view count
-      await supabase.rpc("increment_apartment_views", {
-        apartment_id: params.id,
-      });
+      // Increment view count (Wrapped in try-catch so it doesn't break the page if RPC is missing)
+      try {
+        await supabase.rpc("increment_apartment_views", {
+          apartment_id: params.id,
+        });
+      } catch (rpcError) {
+        console.warn("View counter failed:", rpcError);
+      }
     } catch (error: any) {
-      console.error("Error fetching apartment:", error);
-      toast.error("Apartment not found");
+      console.error("Critical error fetching apartment details:", error);
+      toast.error(error.message || "Property details could not be loaded");
       router.push("/apartments");
     } finally {
       setLoading(false);
@@ -243,6 +247,7 @@ export default function ApartmentDetailPage() {
               src={images[selectedImage].url}
               alt={apartment.title}
               fill
+              unoptimized
               className="object-cover transition-transform duration-1000 select-none"
               priority
             />
@@ -283,6 +288,7 @@ export default function ApartmentDetailPage() {
                     src={img.url}
                     alt={`View ${idx + 1}`}
                     fill
+                    unoptimized
                     className="object-cover"
                   />
                 </button>
@@ -374,10 +380,10 @@ export default function ApartmentDetailPage() {
               
               <div className="flex items-center gap-5 mb-8 relative z-10 p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
                 <div className="w-16 h-16 bg-slate-800 border-2 border-white/10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden shadow-inner">
-                  {apartment.users.avatar_url ? (
+                  {apartment.landlord?.avatar_url ? (
                     <Image
-                      src={apartment.users.avatar_url}
-                      alt={apartment.users.full_name}
+                      src={apartment.landlord.avatar_url}
+                      alt={apartment.landlord.full_name}
                       width={64}
                       height={64}
                       className="rounded-full object-cover"
@@ -388,7 +394,7 @@ export default function ApartmentDetailPage() {
                 </div>
                 <div>
                   <p className="font-bold text-white text-lg tracking-wide">
-                    {apartment.users.full_name}
+                    {apartment.landlord?.full_name || "Verified Owner"}
                   </p>
                   <p className="text-green-400 text-sm font-medium">Verified Property Owner <FaShieldAlt className="inline ml-1 -mt-0.5" /></p>
                 </div>

@@ -282,6 +282,7 @@ export default function LandlordDashboard() {
                         src={apartment.apartment_images[0].url}
                         alt={apartment.title}
                         fill
+                        unoptimized
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (

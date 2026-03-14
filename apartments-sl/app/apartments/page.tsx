@@ -218,6 +218,7 @@ function ApartmentsContent() {
                       src={apartment.apartment_images[0].url}
                       alt={apartment.title}
                       fill
+                      unoptimized
                       className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
                     />
                   ) : (
