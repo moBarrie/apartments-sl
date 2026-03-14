@@ -20,6 +20,7 @@ import {
   FaPaperPlane,
   FaShieldAlt,
   FaCheckCircle,
+  FaBuilding,
 } from "react-icons/fa";
 
 interface Apartment {
@@ -35,6 +36,8 @@ interface Apartment {
   deposit_amount: number;
   available_from: string;
   lease_duration_months: number | null;
+  property_type: string;
+  total_units: number;
   apartment_images: { url: string; caption: string | null }[];
   landlord_id: string;
   users: {
@@ -84,7 +87,6 @@ export default function ApartmentDetailPage() {
         `,
         )
         .eq("id", params.id)
-        .eq("status", "APPROVED")
         .single();
 
       if (error) throw error;
@@ -231,7 +233,7 @@ export default function ApartmentDetailPage() {
   return (
     <div className="min-h-screen bg-slate-50 pt-20 pb-20 relative overflow-hidden">
       {/* Background ambient light */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary-600/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-emerald-600/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in-up">
         {/* Image Gallery Header */}
@@ -258,9 +260,9 @@ export default function ApartmentDetailPage() {
               )}
             </button>
             <div className="absolute bottom-6 left-6 glass-dark px-4 py-2 rounded-xl backdrop-blur-md border border-white/10">
-              <p className="text-white font-medium text-sm">
-                <FaCheckCircle className="inline text-green-400 mr-2 -mt-0.5" />
-                Verified Property
+              <p className="text-white font-medium text-sm capitalize">
+                <FaBuilding className="inline text-emerald-400 mr-2 -mt-0.5" />
+                {apartment.property_type?.replace("_", " ").toLowerCase()}
               </p>
             </div>
           </div>
@@ -273,7 +275,7 @@ export default function ApartmentDetailPage() {
                   onClick={() => setSelectedImage(idx)}
                   className={`relative h-24 w-36 flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-300 ${
                     selectedImage === idx
-                      ? "ring-4 ring-primary-500 ring-offset-2 scale-105 shadow-xl"
+                      ? "ring-4 ring-emerald-500 ring-offset-2 scale-105 shadow-xl"
                       : "opacity-60 hover:opacity-100 hover:scale-105"
                   }`}
                 >
@@ -294,9 +296,9 @@ export default function ApartmentDetailPage() {
           <div className="lg:col-span-2 space-y-8">
             {/* Title card */}
             <div className="bg-white rounded-[2rem] border border-slate-100 p-8 md:p-10 shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 rounded-bl-[100px] pointer-events-none" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-bl-[100px] pointer-events-none" />
               
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 text-primary-600 text-xs font-bold uppercase tracking-widest rounded-lg mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 text-xs font-bold uppercase tracking-widest rounded-lg mb-4">
                 Exclusive Listing
               </div>
               
@@ -341,7 +343,7 @@ export default function ApartmentDetailPage() {
                     key={label}
                     className="bg-slate-50 border border-slate-100 rounded-2xl p-5 text-center group hover:bg-white hover:border-slate-200 hover:shadow-md transition-all duration-300"
                   >
-                    <Icon className="text-primary-500 text-2xl mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                    <Icon className="text-emerald-500 text-2xl mx-auto mb-3 group-hover:scale-110 transition-transform" />
                     <p className="text-xs text-slate-400 font-bold uppercase tracking-[0.2em] mb-1">
                       {label}
                     </p>
@@ -364,7 +366,7 @@ export default function ApartmentDetailPage() {
             {/* Enquiry Component */}
             <div className="bg-slate-900 rounded-[2rem] border border-slate-800 p-8 md:p-10 shadow-2xl relative overflow-hidden">
                {/* Decorative background for dark component */}
-              <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary-600/20 rounded-full blur-[100px] pointer-events-none" />
+              <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-600/20 rounded-full blur-[100px] pointer-events-none" />
 
               <h2 className="text-2xl font-black text-white mb-8 tracking-tight relative z-10">
                 Contact the Proprietor
@@ -400,7 +402,7 @@ export default function ApartmentDetailPage() {
                     </p>
                     <Link
                       href={`/login?redirectTo=/apartments/${params.id}`}
-                      className="inline-flex items-center justify-center px-8 py-3.5 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(38,163,87,0.3)] hover:shadow-[0_0_30px_rgba(38,163,87,0.5)] tracking-wide"
+                      className="inline-flex items-center justify-center px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] tracking-wide"
                     >
                       Sign In to Enquire
                     </Link>
@@ -428,7 +430,7 @@ export default function ApartmentDetailPage() {
                           value={enquiryName}
                           onChange={(e) => setEnquiryName(e.target.value)}
                           placeholder="Full Name"
-                          className="w-full px-5 py-3.5 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:bg-white/10 transition-colors backdrop-blur-sm"
+                          className="w-full px-5 py-3.5 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:bg-white/10 transition-colors backdrop-blur-sm"
                         />
                       </div>
                       <div>
@@ -442,7 +444,7 @@ export default function ApartmentDetailPage() {
                             value={enquiryPhone}
                             onChange={(e) => setEnquiryPhone(e.target.value)}
                             placeholder="+232 77 000 000"
-                            className="w-full pl-11 pr-5 py-3.5 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:bg-white/10 transition-colors backdrop-blur-sm"
+                            className="w-full pl-11 pr-5 py-3.5 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:bg-white/10 transition-colors backdrop-blur-sm"
                           />
                         </div>
                       </div>
@@ -457,13 +459,13 @@ export default function ApartmentDetailPage() {
                         value={enquiryMessage}
                         onChange={(e) => setEnquiryMessage(e.target.value)}
                         placeholder="Detail your interest or scheduling preferences..."
-                        className="w-full px-5 py-4 border border-white/10 rounded-2xl bg-white/5 text-white placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:bg-white/10 transition-colors backdrop-blur-sm resize-none"
+                        className="w-full px-5 py-4 border border-white/10 rounded-2xl bg-white/5 text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:bg-white/10 transition-colors backdrop-blur-sm resize-none"
                       />
                     </div>
                     <button
                       type="submit"
                       disabled={enquirySending}
-                      className="w-full py-4 mt-2 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-400 disabled:opacity-60 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(35,63,124,0.4)] hover:shadow-[0_0_30px_rgba(35,63,124,0.6)] flex items-center justify-center gap-3 tracking-wide"
+                      className="w-full py-4 mt-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:opacity-60 text-white font-bold rounded-xl transition-all shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_10px_40px_rgba(16,185,129,0.5)] flex items-center justify-center gap-3 tracking-wide"
                     >
                       {enquirySending ? (
                         <>
@@ -518,7 +520,7 @@ export default function ApartmentDetailPage() {
 
               <button
                 onClick={handleBooking}
-                className="w-full py-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white font-bold tracking-wide rounded-xl transition-all shadow-[0_0_20px_rgba(38,163,87,0.3)] hover:shadow-[0_0_30px_rgba(38,163,87,0.5)] mb-4"
+                className="w-full py-4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold tracking-wide rounded-xl transition-all shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_10px_40px_rgba(16,185,129,0.5)] mb-4"
               >
                 Reserve Now
               </button>

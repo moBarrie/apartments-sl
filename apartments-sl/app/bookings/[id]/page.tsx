@@ -157,29 +157,29 @@ export default function BookingDetailPage() {
   const isRenter = booking.renter_id === user?.id;
   const coverImage = booking.apartments.apartment_images?.[0]?.url;
 
-  const nights = Math.round(
-    (new Date(booking.end_date).getTime() -
-      new Date(booking.start_date).getTime()) /
-      (1000 * 60 * 60 * 24),
-  );
+  const moveInDate = new Date(booking.start_date);
+  const moveOutDate = new Date(booking.end_date);
+  const months = (moveOutDate.getFullYear() - moveInDate.getFullYear()) * 12 + (moveOutDate.getMonth() - moveInDate.getMonth());
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50 pt-20 pb-20 relative overflow-hidden">
+       {/* Background ambient light */}
+       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-600/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-3xl mx-auto px-4 py-5 flex items-center gap-4">
+      <div className="bg-white border-b border-slate-100">
+        <div className="max-w-3xl mx-auto px-4 py-6 flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-500 transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-500 transition-colors shadow-sm"
           >
             <FaArrowLeft />
           </button>
           <div>
-            <h1 className="text-xl font-black text-gray-900">
-              Booking Details
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+              Reservation Details
             </h1>
-            <p className="text-xs text-gray-400 font-mono">
-              #{booking.id.slice(0, 8).toUpperCase()}
+            <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-0.5">
+              Ref ID: {booking.id.slice(0, 8).toUpperCase()}
             </p>
           </div>
         </div>
@@ -205,9 +205,9 @@ export default function BookingDetailPage() {
         </div>
 
         {/* Property card */}
-        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-          <div className="flex gap-4 p-5">
-            <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
+        <div className="bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-sm">
+          <div className="flex gap-6 p-6">
+            <div className="relative w-28 h-28 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
               {coverImage ? (
                 <Image
                   src={coverImage}
@@ -217,19 +217,19 @@ export default function BookingDetailPage() {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <FaHome className="text-gray-300 text-2xl" />
+                  <FaHome className="text-slate-300 text-3xl" />
                 </div>
               )}
             </div>
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 flex flex-col justify-center">
               <Link
                 href={`/apartments/${booking.apartments.id}`}
-                className="font-bold text-gray-900 hover:text-primary-600 transition-colors line-clamp-2"
+                className="text-lg font-black text-slate-900 hover:text-emerald-600 transition-colors line-clamp-1 tracking-tight"
               >
                 {booking.apartments.title}
               </Link>
-              <p className="text-sm text-gray-500 flex items-center gap-1.5 mt-1">
-                <FaMapMarkerAlt className="text-green-500 flex-shrink-0" />
+              <p className="text-sm text-slate-500 flex items-center gap-2 mt-2 font-light">
+                <FaMapMarkerAlt className="text-emerald-500 flex-shrink-0" />
                 {booking.apartments.address}, {booking.apartments.city}
               </p>
             </div>
@@ -237,13 +237,13 @@ export default function BookingDetailPage() {
         </div>
 
         {/* Dates & pricing */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6">
-          <h2 className="font-bold text-gray-900 mb-4">Booking Summary</h2>
+        <div className="bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm">
+          <h2 className="text-xl font-black text-slate-900 mb-6 tracking-tight">Financial Summary</h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8">
             {[
               {
-                label: "Check-in",
+                label: "Move-In",
                 value: new Date(booking.start_date).toLocaleDateString(
                   "en-GB",
                   { day: "numeric", month: "short", year: "numeric" },
@@ -251,7 +251,7 @@ export default function BookingDetailPage() {
                 Icon: FaCalendar,
               },
               {
-                label: "Check-out",
+                label: "Move-Out",
                 value: new Date(booking.end_date).toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "short",
@@ -260,28 +260,28 @@ export default function BookingDetailPage() {
                 Icon: FaCalendar,
               },
               {
-                label: "Duration",
-                value: `${nights} night${nights !== 1 ? "s" : ""}`,
+                label: "Lease Period",
+                value: `${months} month${months !== 1 ? "s" : ""}`,
                 Icon: FaHourglassHalf,
               },
             ].map(({ label, value, Icon }) => (
-              <div key={label} className="bg-gray-50 rounded-xl p-4">
-                <p className="text-xs text-gray-500 mb-1">{label}</p>
-                <p className="font-bold text-gray-900 text-sm">{value}</p>
+              <div key={label} className="bg-slate-50 border border-slate-100 rounded-2xl p-5 text-center">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">{label}</p>
+                <p className="font-bold text-slate-900">{value}</p>
               </div>
             ))}
           </div>
 
-          <div className="border-t border-gray-100 pt-4 space-y-2 text-sm">
-            <div className="flex justify-between text-gray-600">
-              <span>Security deposit</span>
-              <span className="font-semibold text-gray-900">
+          <div className="border-t border-slate-100 pt-6 space-y-4">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-slate-500 font-medium">Security Deposit (One-time)</span>
+              <span className="font-bold text-slate-900">
                 Le {booking.deposit_amount.toLocaleString()}
               </span>
             </div>
-            <div className="flex justify-between text-gray-600">
-              <span>Total amount</span>
-              <span className="font-bold text-xl text-primary-600">
+            <div className="flex justify-between items-center pt-4 border-t border-slate-100">
+              <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Total Transaction Value</span>
+              <span className="text-2xl font-black text-emerald-600">
                 Le {booking.total_amount.toLocaleString()}
               </span>
             </div>
@@ -313,7 +313,7 @@ export default function BookingDetailPage() {
                 <span className="text-gray-500">Email</span>
                 <a
                   href={`mailto:${booking.users.email}`}
-                  className="font-semibold text-primary-600 hover:underline"
+                  className="font-bold text-emerald-600 hover:underline"
                 >
                   {booking.users.email}
                 </a>
@@ -341,9 +341,9 @@ export default function BookingDetailPage() {
               <button
                 onClick={() => updateStatus("CONFIRMED")}
                 disabled={updating}
-                className="flex-1 py-3 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white font-bold rounded-xl transition-colors"
+                className="flex-1 py-4 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-bold rounded-2xl transition-all shadow-lg shadow-emerald-500/20"
               >
-                Confirm Booking
+                Confirm Residency
               </button>
               <button
                 onClick={() => updateStatus("CANCELLED")}
@@ -355,13 +355,13 @@ export default function BookingDetailPage() {
             </>
           )}
           {isLandlord && booking.status === "CONFIRMED" && (
-            <button
-              onClick={() => updateStatus("COMPLETED")}
-              disabled={updating}
-              className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-bold rounded-xl transition-colors"
-            >
-              Mark as Completed
-            </button>
+              <button
+                onClick={() => updateStatus("COMPLETED")}
+                disabled={updating}
+                className="flex-1 py-4 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white font-bold rounded-2xl transition-all shadow-lg"
+              >
+                Mark as Occupied / Completed
+              </button>
           )}
 
           {/* Renter actions */}
@@ -377,7 +377,7 @@ export default function BookingDetailPage() {
           {isRenter && booking.status === "COMPLETED" && (
             <Link
               href={`/apartments/${booking.apartments.id}/review`}
-              className="flex-1 text-center py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-colors"
+              className="flex-1 text-center py-4 bg-slate-900 hover:bg-emerald-600 text-white font-bold rounded-2xl transition-all shadow-lg"
             >
               Write a Review
             </Link>
