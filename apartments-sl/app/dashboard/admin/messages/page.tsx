@@ -71,20 +71,30 @@ function MessagesContent() {
   const fetchMessages = useCallback(async () => {
     if (!user) return;
 
-    const { data, error } = await supabase
+    let query = supabase
       .from("messages")
       .select(
         `id, content, sender_id, recipient_id, apartment_id, created_at, read_at,
-         sender:users!messages_sender_id_fkey(id, full_name),
-         recipient:users!messages_recipient_id_fkey(id, full_name),
-         apartment:apartments!messages_apartment_id_fkey(id, title, apartment_images(url))`,
-      )
-      .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
-      .order("created_at", { ascending: true });
+         sender:users!sender_id(id, full_name),
+         recipient:users!recipient_id(id, full_name),
+         apartment:apartments!apartment_id(id, title, apartment_images(url))`,
+      );
+
+    // If not admin, only show my own messages
+    if (profile?.role !== "ADMIN") {
+      query = query.or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`);
+    }
+
+    const { data, error } = await query.order("created_at", { ascending: true });
 
     if (error) {
-      console.error(error);
-      toast.error("Could not load messages");
+      console.error("FetchMessages Error Details:", {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      });
+      toast.error(`Database error: ${error.message}`);
       return;
     }
 
@@ -92,8 +102,14 @@ function MessagesContent() {
     const map = new Map<string, Conversation>();
 
     for (const m of data ?? []) {
-      const other =
-        m.sender_id === user.id ? (m.recipient as any) : (m.sender as any);
+      const isAdminView = profile?.role === "ADMIN";
+      
+      // In Admin view, "other" is always the sender (renter) 
+      // In Personal view, "other" is the person I'm talking to
+      const other = isAdminView 
+        ? (m.sender as any) 
+        : (m.sender_id === user.id ? (m.recipient as any) : (m.sender as any));
+        
       const apt = m.apartment as any;
       if (!other || !apt) continue;
 
