@@ -45,7 +45,7 @@ export default function SignUpPage() {
     setLoading(true);
     try {
       await signUp(email, password, fullName, role);
-      toast.success("Account created! Welcome to Apartments.SL");
+      toast.success("Account created! Welcome to LeoneApart");
       router.push(
         role === "LANDLORD" ? "/dashboard/landlord" : "/dashboard/renter",
       );
@@ -121,7 +121,7 @@ export default function SignUpPage() {
             ))}
           </div>
         </div>
-        <p className="text-slate-600 text-sm z-10">© 2026 Apartments.SL — Elite Real Estate</p>
+        <p className="text-slate-600 text-sm z-10">© 2026 LeoneApart — Elite Real Estate</p>
       </div>
 
       {/* Right – form */}

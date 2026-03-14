@@ -9,7 +9,7 @@ import AuthProvider from "@/components/providers/AuthProvider";
 const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Apartments SL - Find Your Perfect Home in Sierra Leone",
+  title: "LeoneApart - Find Your Perfect Home in Sierra Leone",
   description:
     "Discover and book apartments in Freetown, Bo, Kenema, and Makeni",
 };

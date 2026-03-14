@@ -103,7 +103,7 @@ export default function Home() {
               The Standard
             </p>
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">
-              Why Apartments.SL?
+              Why LeoneApart?
             </h2>
             <p className="text-slate-500 text-lg max-w-2xl mx-auto font-light leading-relaxed">
               We've redefined the rental experience to offer unparalleled convenience, security, and luxury for our exclusive clientele.

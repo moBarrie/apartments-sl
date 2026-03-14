@@ -103,7 +103,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
-          <p>© 2026 Apartments.SL. All rights reserved.</p>
+          <p>© 2026 LeoneApart. All rights reserved.</p>
           <p>Made with ❤️ for Sierra Leone</p>
         </div>
       </div>

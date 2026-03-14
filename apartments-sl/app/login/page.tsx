@@ -62,7 +62,7 @@ export default function LoginPage() {
             Kenema &amp; Makeni.
           </p>
         </div>
-        <p className="text-slate-600 text-sm z-10">© 2026 Apartments.SL — Elite Real Estate</p>
+        <p className="text-slate-600 text-sm z-10">© 2026 LeoneApart — Elite Real Estate</p>
       </div>
 
       {/* Right – form */}

@@ -55,7 +55,7 @@ export default function Logo({ variant = "dark", showText = true, className = ""
           <span className={`text-2xl font-black leading-tight tracking-tight ${
             isLight ? "text-white" : "text-slate-900"
           }`}>
-            Apartments<span className="text-emerald-500">.SL</span>
+            Leone<span className="text-emerald-500">Apart</span>
           </span>
           <span className={`text-[10px] font-bold tracking-[0.25em] uppercase ${
             isLight ? "text-slate-400" : "text-slate-500"
