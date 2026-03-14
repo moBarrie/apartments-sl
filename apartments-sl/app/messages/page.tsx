@@ -230,7 +230,7 @@ function MessagesContent() {
           <p className="text-gray-600">Please sign in to view your messages</p>
           <Link
             href="/login"
-            className="inline-block px-6 py-2.5 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-colors"
+            className="inline-block px-8 py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-500/20"
           >
             Sign In
           </Link>
@@ -256,7 +256,7 @@ function MessagesContent() {
 
       {loading ? (
         <div className="flex-1 flex items-center justify-center">
-          <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin" />
         </div>
       ) : (
         <div className="flex-1 flex overflow-hidden max-w-6xl mx-auto w-full px-0 sm:px-4 py-0 sm:py-6 gap-0 sm:gap-4">
@@ -280,7 +280,7 @@ function MessagesContent() {
                   <button
                     key={conv.key}
                     onClick={() => setActiveKey(conv.key)}
-                    className={`w-full text-left p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors flex gap-3 ${activeKey === conv.key ? "bg-green-50" : ""}`}
+                    className={`w-full text-left p-4 border-b border-slate-50 hover:bg-slate-50 transition-colors flex gap-3 ${activeKey === conv.key ? "bg-emerald-50/50" : ""}`}
                   >
                     <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
                       {conv.apartment_image ? (
@@ -313,7 +313,7 @@ function MessagesContent() {
                       </p>
                     </div>
                     {conv.unread > 0 && (
-                      <div className="w-5 h-5 bg-green-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center flex-shrink-0 self-center">
+                      <div className="w-5 h-5 bg-emerald-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center flex-shrink-0 self-center">
                         {conv.unread}
                       </div>
                     )}
@@ -364,7 +364,7 @@ function MessagesContent() {
                         </p>
                         <Link
                           href={`/apartments/${activeConv.apartment_id}`}
-                          className="text-xs text-green-600 hover:underline"
+                          className="text-xs text-emerald-600 font-bold hover:underline"
                         >
                           {activeConv.apartment_title}
                         </Link>
@@ -389,13 +389,13 @@ function MessagesContent() {
                         <div
                           className={`max-w-xs sm:max-w-sm px-4 py-2.5 rounded-2xl text-sm ${
                             isMe
-                              ? "bg-green-600 text-white rounded-br-md"
-                              : "bg-gray-100 text-gray-900 rounded-bl-md"
+                              ? "bg-emerald-600 text-white rounded-br-md shadow-md shadow-emerald-500/10"
+                              : "bg-slate-100 text-slate-900 rounded-bl-md"
                           }`}
                         >
                           <p>{msg.content}</p>
                           <p
-                            className={`text-[10px] mt-1 text-right ${isMe ? "text-green-200" : "text-gray-400"}`}
+                            className={`text-[10px] mt-1 text-right ${isMe ? "text-emerald-100/70" : "text-slate-400"}`}
                           >
                             {fmtTime(msg.created_at)}
                             {isMe && msg.read_at && (
@@ -427,12 +427,12 @@ function MessagesContent() {
                       }
                     }}
                     placeholder="Type a message…"
-                    className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors placeholder:text-gray-400"
+                    className="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 text-sm focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-slate-400"
                   />
                   <button
                     onClick={sendMessage}
                     disabled={sending || !newText.trim()}
-                    className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-green-600 hover:bg-green-700 disabled:opacity-40 text-white rounded-xl transition-colors"
+                    className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white rounded-xl transition-all shadow-lg shadow-emerald-500/20"
                   >
                     {sending ? (
                       <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
@@ -454,8 +454,8 @@ export default function MessagesPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+          <div className="w-10 h-10 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin" />
         </div>
       }
     >

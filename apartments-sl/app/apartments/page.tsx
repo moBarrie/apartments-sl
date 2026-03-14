@@ -13,6 +13,7 @@ import {
   FaRegHeart,
   FaSearch,
   FaFilter,
+  FaBuilding,
 } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import { useAuthStore } from "@/store/authStore";
@@ -27,6 +28,8 @@ interface Apartment {
   bathrooms: number;
   price_per_month: number;
   square_feet: number | null;
+  property_type: string;
+  total_units: number;
   apartment_images: { url: string }[];
 }
 
@@ -247,10 +250,15 @@ function ApartmentsContent() {
                       {apartment.title}
                     </h3>
                   </Link>
-                  <p className="text-slate-500 text-sm flex items-center gap-2 mb-6 font-light">
-                    <FaMapMarkerAlt className="text-emerald-500 flex-shrink-0" />
-                    {apartment.city}, Sierra Leone
-                  </p>
+                  <div className="flex items-center justify-between mb-6">
+                    <p className="text-slate-500 text-sm flex items-center gap-2 font-light">
+                      <FaMapMarkerAlt className="text-emerald-500 flex-shrink-0" />
+                      {apartment.city}, Sierra Leone
+                    </p>
+                    <span className="px-2.5 py-1 bg-slate-50 text-slate-500 text-[10px] font-bold rounded-lg uppercase border border-slate-100">
+                      {apartment.property_type?.replace("_", " ")}
+                    </span>
+                  </div>
                   
                   <div className="flex items-center gap-6 text-sm text-slate-600 mb-6 pb-6 border-b border-slate-100/80">
                     <span className="flex items-center gap-2 font-medium">
@@ -265,11 +273,16 @@ function ApartmentsContent() {
                       </div>
                       {apartment.bathrooms} <span className="text-slate-400 font-light">Baths</span>
                     </span>
-                    {apartment.square_feet && (
+                    {apartment.square_feet ? (
                       <span className="text-slate-400 font-light ml-auto">
                         {apartment.square_feet} ft²
                       </span>
-                    )}
+                    ) : apartment.property_type === "APARTMENT_BLOCK" ? (
+                      <span className="text-emerald-600 font-bold text-xs ml-auto flex items-center gap-1">
+                        <FaBuilding className="w-3 h-3" />
+                        {apartment.total_units} units
+                      </span>
+                    ) : null}
                   </div>
                   
                   <div className="flex items-center justify-between mt-auto">

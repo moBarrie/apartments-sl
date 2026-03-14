@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { FaBed, FaBath, FaMapMarkerAlt, FaArrowRight } from "react-icons/fa";
+import { FaBed, FaBath, FaMapMarkerAlt, FaArrowRight, FaBuilding } from "react-icons/fa";
 
 interface Apartment {
   id: string;
@@ -12,6 +12,8 @@ interface Apartment {
   price_per_month: number;
   bedrooms: number;
   bathrooms: number;
+  property_type: string;
+  total_units: number;
   apartment_images: { url: string }[];
 }
 
@@ -117,10 +119,15 @@ export default function FeaturedApartments() {
               {apartment.title}
             </h3>
             
-            <p className="text-slate-500 text-sm flex items-center gap-2 mb-6 font-light">
-              <FaMapMarkerAlt className="text-emerald-500 flex-shrink-0" />
-              {apartment.city}, Sierra Leone
-            </p>
+            <div className="flex items-center justify-between mb-6">
+              <p className="text-slate-500 text-sm flex items-center gap-2 font-light">
+                <FaMapMarkerAlt className="text-emerald-500 flex-shrink-0" />
+                {apartment.city}, Sierra Leone
+              </p>
+              <span className="px-2 py-0.5 bg-slate-50 text-slate-500 text-[10px] font-bold rounded uppercase border border-slate-100">
+                {apartment.property_type?.replace("_", " ")}
+              </span>
+            </div>
             
             <div className="flex items-center gap-6 text-sm text-slate-600 mb-6 pb-6 border-b border-slate-100/80">
               <span className="flex items-center gap-2 font-medium">
@@ -147,7 +154,11 @@ export default function FeaturedApartments() {
               </div>
               
               <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 transition-all duration-300 transform group-hover:translate-x-1">
-                <FaArrowRight className="w-3.5 h-3.5" />
+                {apartment.property_type === "APARTMENT_BLOCK" ? (
+                  <span className="text-[10px] font-black">{apartment.total_units}</span>
+                ) : (
+                  <FaArrowRight className="w-3.5 h-3.5" />
+                )}
               </div>
             </div>
           </div>

@@ -24,7 +24,7 @@ export default function SearchBar() {
   };
 
   const fieldCls =
-    "w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-primary-500 focus:bg-white text-gray-900 font-medium transition-colors";
+    "w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:border-emerald-500 focus:bg-white text-slate-900 font-medium transition-all";
 
   return (
     <form
@@ -86,7 +86,7 @@ export default function SearchBar() {
 
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 w-full py-3 px-6 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors"
+          className="flex items-center justify-center gap-2 w-full py-3.5 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
         >
           <FaSearch />
           Search

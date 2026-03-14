@@ -87,7 +87,7 @@ export default function SignUpPage() {
   }
 
   const inputCls =
-    "w-full pl-11 pr-12 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors font-medium placeholder:text-gray-400";
+    "w-full pl-11 pr-12 py-3.5 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium placeholder:text-slate-400 shadow-sm";
 
   return (
     <div className="min-h-screen flex">
@@ -147,19 +147,19 @@ export default function SignUpPage() {
           </p>
 
           {/* Role selector */}
-          <div className="grid grid-cols-2 gap-2 mb-6 p-1 bg-gray-100 rounded-xl">
+          <div className="grid grid-cols-2 gap-2 mb-6 p-1.5 bg-slate-100 rounded-2xl">
             {(["RENTER", "LANDLORD"] as const).map((r) => (
               <button
                 key={r}
                 type="button"
                 onClick={() => setRole(r)}
-                className={`py-2.5 px-4 rounded-xl text-sm font-bold transition-all ${
+                className={`py-3 px-4 rounded-xl text-sm font-black transition-all ${
                   role === r
-                    ? "bg-white shadow text-gray-900"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-white shadow-sm text-emerald-600 scale-100"
+                    : "text-slate-400 hover:text-slate-600 scale-[0.98]"
                 }`}
               >
-                {r === "RENTER" ? "🏠 I want to Rent" : "🔑 I want to List"}
+                {r === "RENTER" ? "🏠 Renter" : "🔑 Lister"}
               </button>
             ))}
           </div>
@@ -247,9 +247,13 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50 active:scale-95 flex items-center justify-center gap-3"
             >
-              {loading ? "Creating account…" : "Create account"}
+              {loading ? (
+                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                "Launch Your Profile"
+              )}
             </button>
           </form>
         </div>

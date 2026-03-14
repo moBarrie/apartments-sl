@@ -159,11 +159,11 @@ export default function RenterDashboard() {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 py-10 animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-8" />
-          <div className="h-12 bg-gray-200 rounded-xl mb-6" />
-          <div className="space-y-4">
+          <div className="h-10 bg-slate-200 rounded-full w-1/4 mb-10" />
+          <div className="h-14 bg-slate-100 rounded-2xl mb-8" />
+          <div className="space-y-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-40 bg-gray-200 rounded-2xl" />
+              <div key={i} className="h-44 bg-slate-100 rounded-[2rem]" />
             ))}
           </div>
         </div>
@@ -174,11 +174,11 @@ export default function RenterDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Page header */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-2xl font-black text-gray-900">My Dashboard</h1>
-          <p className="text-gray-500 text-sm mt-0.5">
-            Manage your bookings and saved properties
+      <div className="bg-white border-b border-slate-100 pb-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Renter Dashboard</h1>
+          <p className="text-slate-500 font-light mt-1">
+            Manage your residency applications and saved collections
           </p>
         </div>
       </div>
@@ -190,10 +190,10 @@ export default function RenterDashboard() {
             <nav className="flex gap-1">
               <button
                 onClick={() => setActiveTab("bookings")}
-                className={`py-4 px-2 text-sm font-semibold border-b-2 transition-colors ${
+                className={`py-4 px-4 text-sm font-bold border-b-2 transition-all ${
                   activeTab === "bookings"
-                    ? "border-primary-600 text-primary-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
+                    ? "border-emerald-600 text-emerald-600"
+                    : "border-transparent text-slate-400 hover:text-slate-600"
                 }`}
               >
                 <FaCalendarAlt className="inline mr-2" />
@@ -206,10 +206,10 @@ export default function RenterDashboard() {
               </button>
               <button
                 onClick={() => setActiveTab("favorites")}
-                className={`py-4 px-2 text-sm font-semibold border-b-2 transition-colors ${
+                className={`py-4 px-4 text-sm font-bold border-b-2 transition-all ${
                   activeTab === "favorites"
-                    ? "border-primary-600 text-primary-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
+                    ? "border-emerald-600 text-emerald-600"
+                    : "border-transparent text-slate-400 hover:text-slate-600"
                 }`}
               >
                 <FaHeart className="inline mr-2" />
@@ -238,9 +238,9 @@ export default function RenterDashboard() {
                   </p>
                   <Link
                     href="/apartments"
-                    className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition-colors"
+                    className="inline-flex items-center px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20"
                   >
-                    Browse Apartments
+                    Explore Collections
                   </Link>
                 </div>
               ) : (
@@ -270,7 +270,7 @@ export default function RenterDashboard() {
                           <div className="flex flex-wrap justify-between items-start gap-2 mb-2">
                             <Link
                               href={`/apartments/${booking.apartments.id}`}
-                              className="text-xl font-bold text-gray-900 hover:text-primary-600 transition-colors line-clamp-1"
+                              className="text-xl font-black text-slate-900 hover:text-emerald-600 transition-colors line-clamp-1 tracking-tight"
                             >
                               {booking.apartments.title}
                             </Link>
@@ -322,9 +322,9 @@ export default function RenterDashboard() {
                           <div className="flex gap-3">
                             <Link
                               href={`/bookings/${booking.id}`}
-                              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-sm font-semibold transition-colors"
+                              className="px-6 py-2.5 bg-slate-900 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg"
                             >
-                              View Details
+                              Details
                             </Link>
                             {booking.status === "COMPLETED" && (
                               <Link
@@ -355,9 +355,9 @@ export default function RenterDashboard() {
                 </p>
                 <Link
                   href="/apartments"
-                  className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition-colors"
+                  className="inline-flex items-center px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20"
                 >
-                  Browse Apartments
+                  Save Some Favorites
                 </Link>
               </div>
             ) : (
@@ -390,29 +390,29 @@ export default function RenterDashboard() {
                         {favorite.apartments.city}, Sierra Leone
                       </p>
 
-                      <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                        <span className="flex items-center gap-1">
-                          <FaBed className="text-primary-500" />
-                          {favorite.apartments.bedrooms} bd
+                    <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
+                        <span className="flex items-center gap-1.5">
+                          <FaBed className="text-emerald-500" />
+                          {favorite.apartments.bedrooms} BR
                         </span>
-                        <span className="flex items-center gap-1">
-                          <FaBath className="text-primary-500" />
-                          {favorite.apartments.bathrooms} ba
+                        <span className="flex items-center gap-1.5">
+                          <FaBath className="text-emerald-500" />
+                          {favorite.apartments.bathrooms} BA
                         </span>
                       </div>
 
-                      <p className="text-lg font-black text-primary-600 mb-4">
+                      <p className="text-xl font-black text-emerald-600 mb-5">
                         Le{" "}
                         {favorite.apartments.price_per_month.toLocaleString()}
-                        <span className="text-gray-500 font-normal text-sm">
-                          /mo
+                        <span className="text-slate-400 font-bold text-xs uppercase tracking-widest ml-1">
+                          / mo
                         </span>
                       </p>
 
                       <div className="flex gap-2">
                         <Link
                           href={`/apartments/${favorite.apartments.id}`}
-                          className="flex-1 py-2 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-sm font-semibold text-center transition-colors"
+                          className="flex-1 py-2.5 px-4 bg-slate-900 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold text-center transition-all shadow-md"
                         >
                           View
                         </Link>
