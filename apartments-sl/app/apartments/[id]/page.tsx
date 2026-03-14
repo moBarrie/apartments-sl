@@ -182,6 +182,11 @@ export default function ApartmentDetailPage() {
       return;
     }
 
+    if (!apartment.landlord_id) {
+      toast.error("Property owner information is missing");
+      return;
+    }
+
     setEnquirySending(true);
     try {
       const content = `[Enquiry: ${apartment.title}]\nName: ${enquiryName}\nPhone: ${enquiryPhone || "Not provided"}\n\n${enquiryMessage.trim()}`;

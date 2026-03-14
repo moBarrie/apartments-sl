@@ -96,7 +96,7 @@ export default function BookingDetailPage() {
           `
           *,
           apartments(id, title, address, city, price_per_month, landlord_id, apartment_images(url)),
-          users!bookings_renter_id_fkey(full_name, email, phone)
+          users!renter_id(full_name, email, phone)
         `,
         )
         .eq("id", params.id)
